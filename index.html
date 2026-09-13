@@ -1,0 +1,1467 @@
+<title>스마트폰 첫걸음</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Gothic+A1:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #EEF3F7;
+    --surface: #FFFFFF;
+    --surface-2: #F5F8FA;
+    --border: #D9E2E8;
+    --text: #1E2A3A;
+    --text-muted: #5B6B7A;
+    --primary: #1E3A5F;
+    --primary-soft: #E4ECF3;
+    --accent: #E08A2C;
+    --accent-soft: #FBEBD4;
+    --done: #3F8F63;
+    --done-soft: #E1F1E7;
+    --new: #D1583F;
+    --new-soft: #FBE5DF;
+    --shadow: 0 1px 2px rgba(30,42,58,.06), 0 8px 20px -12px rgba(30,42,58,.18);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg: #10161F;
+      --surface: #171F2A;
+      --surface-2: #1D2733;
+      --border: #2B3A48;
+      --text: #E7ECF1;
+      --text-muted: #93A6B4;
+      --primary: #8FB6D9;
+      --primary-soft: #21344A;
+      --accent: #F0A857;
+      --accent-soft: #3A2C1A;
+      --done: #74C495;
+      --done-soft: #1D3327;
+      --new: #E8836A;
+      --new-soft: #3B241E;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 24px -14px rgba(0,0,0,.55);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg: #10161F;
+    --surface: #171F2A;
+    --surface-2: #1D2733;
+    --border: #2B3A48;
+    --text: #E7ECF1;
+    --text-muted: #93A6B4;
+    --primary: #8FB6D9;
+    --primary-soft: #21344A;
+    --accent: #F0A857;
+    --accent-soft: #3A2C1A;
+    --done: #74C495;
+    --done-soft: #1D3327;
+    --new: #E8836A;
+    --new-soft: #3B241E;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 24px -14px rgba(0,0,0,.55);
+    color-scheme: dark;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:"Gothic A1", "Apple SD Gothic Neo", sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:"Gowun Batang", "Noto Serif KR", serif;
+    text-wrap:balance;
+    margin:0;
+    color:var(--text);
+  }
+  a{color:inherit;}
+  .wrap{max-width:920px; margin:0 auto; padding-inline:20px;}
+
+  /* ---------- top bar ---------- */
+  .topbar{
+    position:sticky; top:0; z-index:20;
+    background:color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--border);
+  }
+  .topbar-inner{
+    display:flex; align-items:center; gap:14px;
+    padding-block:12px;
+  }
+  .brand{
+    font-family:"Gowun Batang", serif;
+    font-weight:700; font-size:1.05rem;
+    white-space:nowrap;
+    display:flex; align-items:center; gap:8px;
+  }
+  .brand .dot{width:9px;height:9px;border-radius:50%;background:var(--accent);display:inline-block;}
+  .jumprow{
+    display:flex; gap:6px; overflow-x:auto;
+    scrollbar-width:none;
+    padding-bottom:2px;
+  }
+  .jumprow::-webkit-scrollbar{display:none;}
+  .jumprow a{
+    flex:0 0 auto;
+    font-size:.8rem; font-weight:600;
+    padding:6px 10px; border-radius:999px;
+    background:var(--surface-2); border:1px solid var(--border);
+    text-decoration:none; color:var(--text-muted);
+  }
+  .jumprow a.is-done{color:var(--done); border-color:color-mix(in srgb, var(--done) 40%, var(--border));}
+
+  /* ---------- hero ---------- */
+  .hero{padding-block:44px 28px;}
+  .eyebrow{
+    font-size:.78rem; font-weight:700; letter-spacing:.08em;
+    color:var(--accent); text-transform:uppercase;
+  }
+  .hero h1{font-size:clamp(1.9rem, 5vw, 2.6rem); margin-top:10px;}
+  .hero p.lede{
+    max-width:60ch; color:var(--text-muted); font-size:1.02rem; margin-top:12px;
+  }
+
+  .meta-grid{
+    display:grid; grid-template-columns:repeat(auto-fit, minmax(150px,1fr));
+    gap:10px; margin-top:26px;
+  }
+  .meta-card{
+    background:var(--surface); border:1px solid var(--border); border-radius:12px;
+    padding:14px 16px; box-shadow:var(--shadow);
+  }
+  .meta-card .k{font-size:.72rem; color:var(--text-muted); font-weight:600; letter-spacing:.03em;}
+  .meta-card .v{font-size:1rem; font-weight:700; margin-top:4px; font-variant-numeric:tabular-nums;}
+
+  .progress-block{margin-top:22px;}
+  .progress-label{
+    display:flex; justify-content:space-between; align-items:baseline;
+    font-size:.85rem; color:var(--text-muted); margin-bottom:6px;
+  }
+  .progress-label b{color:var(--text); font-variant-numeric:tabular-nums;}
+  .progress-track{
+    height:8px; border-radius:999px; background:var(--surface-2);
+    border:1px solid var(--border); overflow:hidden;
+  }
+  .progress-fill{height:100%; background:linear-gradient(90deg, var(--done), color-mix(in srgb, var(--done) 70%, var(--accent))); border-radius:999px;}
+
+  /* ---------- legend ---------- */
+  .legend{
+    display:flex; flex-wrap:wrap; gap:10px 18px;
+    padding-block:16px; margin-top:8px;
+    border-top:1px solid var(--border); border-bottom:1px solid var(--border);
+    font-size:.85rem; color:var(--text-muted);
+  }
+  .legend span.badge{margin-right:6px;}
+
+  /* ---------- badges ---------- */
+  .badge{
+    display:inline-flex; align-items:center; gap:5px;
+    font-size:.72rem; font-weight:700; letter-spacing:.02em;
+    padding:3px 9px; border-radius:999px;
+  }
+  .badge.done{background:var(--done-soft); color:var(--done);}
+  .badge.new{background:var(--new-soft); color:var(--new);}
+
+  /* ---------- timeline ---------- */
+  .timeline{padding-block:20px 60px;}
+  .day{
+    padding-block:28px;
+    border-top:1px solid var(--border);
+    scroll-margin-top:96px;
+  }
+  .day:first-of-type{border-top:none;}
+  .day-head{
+    display:flex; align-items:baseline; gap:14px; flex-wrap:wrap;
+    margin-bottom:16px;
+  }
+  .day-num{
+    font-family:"Gowun Batang", serif; font-weight:700;
+    font-size:1.7rem; color:var(--primary);
+    font-variant-numeric:tabular-nums;
+  }
+  .day-title{font-size:1.15rem; font-weight:700;}
+  .day-date{
+    font-size:.85rem; color:var(--text-muted); font-weight:600;
+    font-variant-numeric:tabular-nums;
+    background:var(--surface-2); border:1px solid var(--border);
+    padding:3px 10px; border-radius:999px;
+  }
+
+  .sessions{
+    display:grid; grid-template-columns:1fr 1fr; gap:14px;
+  }
+  @media (max-width:640px){ .sessions{grid-template-columns:1fr;} }
+
+  .session{
+    background:var(--surface); border:1px solid var(--border); border-radius:14px;
+    padding:16px 18px; box-shadow:var(--shadow);
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .session-head{display:flex; align-items:center; justify-content:space-between; gap:8px;}
+  .chasi{
+    font-size:.74rem; font-weight:800; color:var(--primary);
+    background:var(--primary-soft); padding:3px 9px; border-radius:999px;
+    font-variant-numeric:tabular-nums;
+  }
+  .time{font-size:.74rem; color:var(--text-muted); font-variant-numeric:tabular-nums;}
+  .session h3{font-size:1.02rem; font-weight:700;}
+  .session p{margin:0; color:var(--text-muted); font-size:.92rem;}
+
+  footer{
+    border-top:1px solid var(--border);
+    padding-block:30px 50px;
+    color:var(--text-muted); font-size:.85rem;
+  }
+  footer .signoff{margin-top:6px; font-weight:600; color:var(--text);}
+
+  @media (prefers-reduced-motion:no-preference){
+    .day{animation:rise .5s ease both;}
+  }
+  @keyframes rise{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;}}
+
+  /* ---------- CTA into class mode ---------- */
+  .cta-row{margin-top:22px; display:flex; gap:10px; flex-wrap:wrap;}
+  .btn{
+    appearance:none; border:none; cursor:pointer;
+    font-family:inherit; font-size:.92rem; font-weight:700;
+    padding:11px 18px; border-radius:11px;
+    display:inline-flex; align-items:center; gap:8px;
+  }
+  .btn-primary{background:var(--primary); color:var(--bg);}
+  .btn-ghost{background:var(--surface); color:var(--text); border:1px solid var(--border);}
+
+  /* ================= 수업 슬라이드 모드 ================= */
+  #slideView{
+    display:none;
+    position:fixed; inset:0; z-index:100;
+    background:var(--bg); color:var(--text);
+    flex-direction:column;
+  }
+  #slideView.is-active{display:flex;}
+  body.slide-mode #siteView{display:none;}
+
+  .slide-bar{
+    display:flex; align-items:center; gap:10px;
+    padding:12px 18px; border-bottom:1px solid var(--border);
+    flex:0 0 auto;
+  }
+  .slide-bar .sp{flex:1;}
+  .slide-count{
+    font-variant-numeric:tabular-nums; font-weight:700;
+    font-size:.85rem; color:var(--text-muted);
+    background:var(--surface-2); border:1px solid var(--border);
+    padding:5px 12px; border-radius:999px;
+  }
+  .icon-btn{
+    appearance:none; border:1px solid var(--border); background:var(--surface);
+    color:var(--text); border-radius:10px; width:38px; height:38px;
+    font-size:1rem; cursor:pointer; display:inline-flex; align-items:center; justify-content:center;
+  }
+  .icon-btn:hover{border-color:var(--primary);}
+
+  .slide-stage{flex:1; overflow:auto; display:flex;}
+  .slide{
+    display:none;
+    flex-direction:column;
+    justify-content:flex-start;
+    width:100%; max-width:840px; margin:0 auto;
+    padding:4vh 28px 8vh;
+    gap:16px;
+  }
+  .slide.is-current{display:flex;}
+
+  .slide-kicker{
+    font-size:.85rem; font-weight:700; letter-spacing:.03em;
+    color:var(--accent); display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+  }
+  .slide h2{
+    font-size:clamp(1.6rem, 4.6vw, 2.5rem);
+  }
+  .slide .goal{
+    font-size:1.15rem; font-weight:700; color:var(--primary);
+    background:var(--primary-soft); border-radius:12px; padding:14px 18px;
+    margin:0;
+  }
+  .timebar{
+    font-size:.85rem; font-weight:700; color:var(--text-muted);
+    letter-spacing:.01em;
+  }
+  .timebar b{color:var(--text);}
+
+  .steps{
+    list-style:none; counter-reset:step; margin:0; padding:0;
+    display:flex; flex-direction:column; gap:12px;
+  }
+  .steps li{
+    counter-increment:step;
+    display:flex; gap:12px; align-items:flex-start;
+    font-size:1.05rem; line-height:1.5;
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:12px; padding:11px 15px; box-shadow:var(--shadow);
+  }
+  .steps li::before{
+    content:counter(step);
+    flex:0 0 auto;
+    width:28px; height:28px; border-radius:50%;
+    background:var(--primary); color:var(--bg);
+    display:flex; align-items:center; justify-content:center;
+    font-weight:800; font-size:.85rem; font-variant-numeric:tabular-nums;
+  }
+  .tip{
+    font-size:1rem; color:var(--text-muted);
+    background:var(--accent-soft); border-radius:12px; padding:14px 18px;
+    border:1px solid color-mix(in srgb, var(--accent) 35%, var(--border));
+  }
+  .tip b{color:var(--text);}
+
+  /* divider slide */
+  .slide-divider{align-items:flex-start; justify-content:center; gap:14px;}
+  .divider-num{
+    font-family:"Gowun Batang", serif; font-weight:700;
+    font-size:clamp(3.2rem, 12vw, 6rem); color:var(--primary); line-height:1;
+  }
+  .divider-date{font-weight:700; color:var(--text-muted); font-size:1.1rem;}
+  .slide-divider h2{margin-top:2px;}
+  .preview-list{display:flex; flex-direction:column; gap:8px; margin-top:10px;}
+  .preview-list div{
+    font-size:1.05rem; color:var(--text-muted);
+    background:var(--surface); border:1px solid var(--border); border-radius:10px;
+    padding:10px 14px;
+  }
+  .preview-list b{color:var(--text);}
+
+  /* cover slide */
+  .slide-cover{align-items:flex-start; justify-content:center;}
+  .slide-cover h2{font-size:clamp(2rem,6vw,3rem);}
+  .cover-meta{display:flex; flex-wrap:wrap; gap:10px; margin-top:6px;}
+  .cover-meta span{
+    font-size:.85rem; font-weight:700; color:var(--text-muted);
+    background:var(--surface); border:1px solid var(--border);
+    padding:6px 12px; border-radius:999px;
+  }
+
+  @media (max-width:640px){
+    .steps li{font-size:1.05rem; padding:12px 14px;}
+    .slide{padding-top:3vh;}
+  }
+</style>
+
+<div id="siteView">
+<div class="topbar">
+  <div class="wrap topbar-inner">
+    <div class="brand"><span class="dot"></span>스마트폰 첫걸음</div>
+    <nav class="jumprow" aria-label="회차 바로가기">
+      <a href="#day-1" class="is-done">1회</a>
+      <a href="#day-2" class="is-done">2회</a>
+      <a href="#day-3">3회</a>
+      <a href="#day-4">4회</a>
+      <a href="#day-5">5회</a>
+      <a href="#day-6">6회</a>
+      <a href="#day-7">7회</a>
+      <a href="#day-8">8회</a>
+      <a href="#day-9">9회</a>
+      <a href="#day-10">10회</a>
+      <a href="#day-11">11회</a>
+      <a href="#day-12">12회</a>
+      <a href="#day-13">13회</a>
+      <a href="#day-14">14회</a>
+    </nav>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <section class="hero">
+    <div class="eyebrow">코딩하루학원 경북도청센터 · 강사 임명진</div>
+    <h1>초보자를 위한 AI 스마트폰 활용</h1>
+    <p class="lede">어르신도 스마트폰과 AI를 생활 속에서 편하게 쓸 수 있도록, 이론 20%·실습 80%로 진행하는 14주 커리큘럼입니다. 개별 진도로 운영하며, 음성비서는 기종에 관계없이 구글 어시스턴트·제미나이로 통일해 안내합니다.</p>
+
+    <div class="meta-grid">
+      <div class="meta-card"><div class="k">운영 기간</div><div class="v">2026.9.4 – 12.18</div></div>
+      <div class="meta-card"><div class="k">요일 · 시간</div><div class="v">매주 금 10:00–12:00</div></div>
+      <div class="meta-card"><div class="k">전체 구성</div><div class="v">14회 × 2차시(28차시)</div></div>
+      <div class="meta-card"><div class="k">대상 · 인원</div><div class="v">어르신/성인 · 18명</div></div>
+    </div>
+
+    <div class="progress-block">
+      <div class="progress-label"><span>진행 현황</span><span><b>4</b> / 28차시 완료</span></div>
+      <div class="progress-track"><div class="progress-fill" style="width:14%"></div></div>
+    </div>
+
+    <div class="cta-row">
+      <button class="btn btn-primary" onclick="enterSlideMode()">🖥️ 수업 슬라이드로 보기</button>
+      <span style="align-self:center; font-size:.82rem; color:var(--text-muted);">화면에 띄워두고 한 장씩 넘기며 그대로 따라 하시면 돼요</span>
+    </div>
+  </section>
+
+  <div class="legend">
+    <span><span class="badge done">완료</span>이미 진행한 회차</span>
+    <span><span class="badge new">NEW</span>이번에 새로 추가한 실습 항목</span>
+  </div>
+
+  <section class="timeline">
+
+    <div class="day" id="day-1">
+      <div class="day-head">
+        <span class="day-num">01</span>
+        <span class="day-title">반가워요, 스마트폰</span>
+        <span class="day-date">9/4 (금)</span>
+        <span class="badge done">완료</span>
+      </div>
+      <div class="sessions">
+        <div class="session">
+          <div class="session-head"><span class="chasi">1차시</span><span class="time">10:00–11:00</span></div>
+          <h3>반가워요 스마트폰</h3>
+          <p>전원 켜기·끄기, 화면 밝기·글자 크기 조절, 홈 화면·앱·와이파이 등 기본 용어 익히기</p>
+        </div>
+        <div class="session">
+          <div class="session-head"><span class="chasi">2차시</span><span class="time">11:00–12:00</span></div>
+          <h3>음성으로 말 걸어보기</h3>
+          <p>빅스비 실행 시도, 미지원 기종은 구글 어시스턴트(헤이 구글)로 대체 설정, 음성으로 간단히 질문해보기</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="day" id="day-2">
+      <div class="day-head">
+        <span class="day-num">02</span>
+        <span class="day-title">AI 비서와 갤러리 첫걸음</span>
+        <span class="day-date">9/11 (금)</span>
+        <span class="badge done">완료</span>
+      </div>
+      <div class="sessions">
+        <div class="session">
+          <div class="session-head"><span class="chasi">3차시</span><span class="time">10:00–11:00</span></div>
+          <h3>제미나이 연결하기</h3>
+          <p>제미나이 앱 설치, 헤이 구글과 제미나이 연동 설정, 말로 질문 던져보기(날씨·시간 확인)</p>
+        </div>
+        <div class="session">
+          <div class="session-head"><span class="chasi">4차시</span><span class="time">11:00–12:00</span></div>
+          <h3>갤러리 활용 첫걸음</h3>
+          <p>갤러리 앱에서 사진 검색해보기, 최근 항목·즐겨찾기 확인, 사진 삭제·복구 방법</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="day" id="day-3">
+      <div class="day-head">
+        <span class="day-num">03</span>
+        <span class="day-title">소통하기 : 카카오톡</span>
+        <span class="day-date">9/18 (금)</span>
+      </div>
+      <div class="sessions">
+        <div class="session">
+          <div class="session-head"><span class="chasi">5차시</span><span class="time">10:00–11:00</span></div>
+          <h3>카카오톡 시작하기</h3>
+          <p>카카오톡 설치 확인, 프로필 사진·상태메시지 설정, 연락처에서 친구 추가, 메시지 보내고 받기</p>
+        </div>
+        <div class="session">
+          <div class="session-head"><span class="chasi">6차시</span><span class="time">11:00–12:00</span></div>
+          <h3>카카오톡으로 소통하기</h3>
+          <p>사진·동영상 전송, 실시간 위치 공유, 음성·영상통화 걸기, 단체채팅방 만들기·공지·투표 기능</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="day" id="day-4">
+      <div class="day-head">
+        <span class="day-num">04</span>
+        <span class="day-title">내 손안의 카메라</span>
+        <span class="day-date">10/2 (금)</span>
+      </div>
+      <div class="sessions">
+        <div class="session">
+          <div class="session-head"><span class="chasi">7차시</span><span class="time">10:00–11:00</span></div>
+          <h3>내 손안의 카메라</h3>
+          <p>사진 촬영 기초(초점·구도), 확대·축소(줌) 활용법, 연속 촬영·타이머 기능</p>
+        </div>
+        <div class="session">
+          <div class="session-head"><span class="chasi">8차시</span><span class="time">11:00–12:00</span></div>
+          <h3>사진 정리와 AI 렌즈</h3>
+          <p>갤러리 앨범 만들고 정리·삭제하기, AI 렌즈로 꽃·간판·물건 비추어 정보 검색하기</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="day" id="day-5">
+      <div class="day-head">
+        <span class="day-num">05</span>
+        <span class="day-title">AI에게 글 부탁하기</span>
+        <span class="day-date">10/16 (금)</span>
+      </div>
+      <div class="sessions">
+        <div class="session">
+          <div class="session-head"><span class="chasi">9차시</span><span class="time">10:00–11:00</span></div>
+          <h3>AI에게 문자 부탁하기</h3>
+          <p>안부 문자 문구 AI로 다듬기, 자녀·손주에게 보낼 편지 대신 써달라 요청하기</p>
+        </div>
+        <div class="session">
+          <div class="session-head"><span class="chasi">10차시</span><span class="time">11:00–12:00</span></div>
+          <h3>축하 문구 만들고 보내기</h3>
+          <p>경조사·생일 축하 문구 AI로 작성, 완성한 문구 카카오톡으로 전송해보기</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="day" id="day-6">
+      <div class="day-head">
+        <span class="day-num">06</span>
+        <span class="day-title">AI 사진 편집 1</span>
+        <span class="day-date">10/23 (금)</span>
+      </div>
+      <div class="sessions">
+        <div class="session">
+          <div class="session-head"><span class="chasi">11차시</span><span class="time">10:00–11:00</span></div>
+          <h3>지우기</h3>
+          <p>사진 속 불필요한 사람·물건 지우개 기능으로 지우기, 밝기·색감 보정하기</p>
+        </div>
+        <div class="session">
+          <div class="session-head"><span class="chasi">12차시</span><span class="time">11:00–12:00</span></div>
+          <h3>선명하게</h3>
+          <p>흐린 사진 선명하게 만들기, 보정 전·후 비교, 마음에 드는 사진 저장하기</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="day" id="day-7">
+      <div class="day-head">
+        <span class="day-num">07</span>
+        <span class="day-title">AI 사진 편집 2</span>
+        <span class="day-date">10/30 (금)</span>
+      </div>
+      <div class="sessions">
+        <div class="session">
+          <div class="session-head"><span class="chasi">13차시</span><span class="time">10:00–11:00</span></div>
+          <h3>배경과 인물</h3>
+          <p>사진 배경 바꾸기, 얼굴·피부 보정하기</p>
+        </div>
+        <div class="session">
+          <div class="session-head"><span class="chasi">14차시</span><span class="time">11:00–12:00</span></div>
+          <h3>오래된 사진 복원</h3>
+          <p>흑백·손상된 옛날 사진 AI로 복원하기, 복원한 가족사진 함께 감상하기</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="day" id="day-8">
+      <div class="day-head">
+        <span class="day-num">08</span>
+        <span class="day-title">사진이 그림으로!</span>
+        <span class="day-date">11/6 (금)</span>
+      </div>
+      <div class="sessions">
+        <div class="session">
+          <div class="session-head"><span class="chasi">15차시</span><span class="time">10:00–11:00</span></div>
+          <h3>사진이 그림으로!</h3>
+          <p>내 사진을 만화·유화 스타일 그림으로 바꾸기</p>
+        </div>
+        <div class="session">
+          <div class="session-head"><span class="chasi">16차시</span><span class="time">11:00–12:00</span></div>
+          <h3>나만의 캐리커처</h3>
+          <p>캐리커처 만들어 프로필 사진으로 변경하기, 가족 캐리커처도 만들어보기</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="day" id="day-9">
+      <div class="day-head">
+        <span class="day-num">09</span>
+        <span class="day-title">상상을 현실로</span>
+        <span class="day-date">11/13 (금)</span>
+      </div>
+      <div class="sessions">
+        <div class="session">
+          <div class="session-head"><span class="chasi">17차시</span><span class="time">10:00–11:00</span></div>
+          <h3>상상을 현실로 1</h3>
+          <p>문장으로 그림을 만드는 AI 이미지 생성 기초 익히기</p>
+        </div>
+        <div class="session">
+          <div class="session-head"><span class="chasi">18차시</span><span class="time">11:00–12:00</span></div>
+          <h3>상상을 현실로 2</h3>
+          <p>손주 이름·생일 축하 이미지 만들어보기, 원하는 그림이 나오도록 말(프롬프트) 바꿔보기</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="day" id="day-10">
+      <div class="day-head">
+        <span class="day-num">10</span>
+        <span class="day-title">AI로 영상 만들기</span>
+        <span class="day-date">11/20 (금)</span>
+      </div>
+      <div class="sessions">
+        <div class="session">
+          <div class="session-head"><span class="chasi">19차시</span><span class="time">10:00–11:00</span></div>
+          <h3>AI로 영상 만들기 1</h3>
+          <p>사진 여러 장을 골라 짧은 영상으로 만들기, 배경 음악 넣기</p>
+        </div>
+        <div class="session">
+          <div class="session-head"><span class="chasi">20차시</span><span class="time">11:00–12:00</span></div>
+          <h3>AI로 영상 만들기 2</h3>
+          <p>완성한 영상 카카오톡·유튜브로 가족에게 보내기, 함께 감상하고 소감 나누기</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="day" id="day-11">
+      <div class="day-head">
+        <span class="day-num">11</span>
+        <span class="day-title">AI 통역과 글 읽어주기</span>
+        <span class="day-date">11/27 (금)</span>
+      </div>
+      <div class="sessions">
+        <div class="session">
+          <div class="session-head"><span class="chasi">21차시</span><span class="time">10:00–11:00</span></div>
+          <h3>AI 통역 활용하기</h3>
+          <p>사진 속 외국어 글자(메뉴판·표지판) 번역해보기</p>
+        </div>
+        <div class="session">
+          <div class="session-head"><span class="chasi">22차시</span><span class="time">11:00–12:00</span></div>
+          <h3>AI가 글 읽어주기</h3>
+          <p>병원 진료안내문·약 설명서 사진 찍어 쉬운 말로 풀이받기, 소리 내어 읽어주는 기능 활용</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="day" id="day-12">
+      <div class="day-head">
+        <span class="day-num">12</span>
+        <span class="day-title">나들이 준비하기</span>
+        <span class="day-date">12/4 (금)</span>
+      </div>
+      <div class="sessions">
+        <div class="session">
+          <div class="session-head"><span class="chasi">23차시</span><span class="time">10:00–11:00</span></div>
+          <h3>나들이 준비하기 1 <span class="badge new">NEW</span></h3>
+          <p>지도 앱으로 현재 위치 확인·길찾기, 버스·기차 예매 앱 사용해보기, PASS 앱으로 모바일 신분증 만들어두기</p>
+        </div>
+        <div class="session">
+          <div class="session-head"><span class="chasi">24차시</span><span class="time">11:00–12:00</span></div>
+          <h3>나들이 준비하기 2 <span class="badge new">NEW</span></h3>
+          <p>문경사랑상품권 모바일앱 설치·충전·사용법 익히기, 유튜브에서 관심사 검색·구독하기, AI에게 오늘 일정 물어보기</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="day" id="day-13">
+      <div class="day-head">
+        <span class="day-num">13</span>
+        <span class="day-title">키오스크와 AI 사기 예방</span>
+        <span class="day-date">12/11 (금)</span>
+      </div>
+      <div class="sessions">
+        <div class="session">
+          <div class="session-head"><span class="chasi">25차시</span><span class="time">10:00–11:00</span></div>
+          <h3>키오스크 실습과 간편결제 <span class="badge new">NEW</span></h3>
+          <p>음식 주문·병원 수납 무인단말기(키오스크) 실습, 삼성페이 설정하고 간편결제로 결제해보기</p>
+        </div>
+        <div class="session">
+          <div class="session-head"><span class="chasi">26차시</span><span class="time">11:00–12:00</span></div>
+          <h3>AI 사기 예방하기</h3>
+          <p>스팸 문자·전화 차단 앱 설정, AI 목소리 복제·가짜 영상(딥페이크) 구별법, 보이스피싱 의심 상황 대응법</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="day" id="day-14">
+      <div class="day-head">
+        <span class="day-num">14</span>
+        <span class="day-title">총정리 · 수료식</span>
+        <span class="day-date">12/18 (금)</span>
+      </div>
+      <div class="sessions">
+        <div class="session">
+          <div class="session-head"><span class="chasi">27차시</span><span class="time">10:00–11:00</span></div>
+          <h3>배운 내용 총정리</h3>
+          <p>14주간 배운 내용 함께 복습(퀴즈 형식), 내가 만든 그림·영상 모아서 감상하기</p>
+        </div>
+        <div class="session">
+          <div class="session-head"><span class="chasi">28차시</span><span class="time">11:00–12:00</span></div>
+          <h3>수료식</h3>
+          <p>궁금한 점 질의응답, 수료 소감 나누기, 수료 기념 촬영</p>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <footer>
+    <div>※ 강의계획서는 사정에 따라 변경될 수 있습니다.</div>
+    <div class="signoff">코딩하루학원 경북도청센터 · 강사 임명진 · 작성일 2026. 9. 12.</div>
+  </footer>
+
+</main>
+</div><!-- /siteView -->
+
+<div id="slideView">
+  <div class="slide-bar">
+    <button class="icon-btn" onclick="exitSlideMode()" title="사이트로 나가기">✕</button>
+    <button class="icon-btn" onclick="goPrev()" title="이전(←)">‹</button>
+    <button class="icon-btn" onclick="goNext()" title="다음(→)">›</button>
+    <span class="sp"></span>
+    <span class="slide-count"><span id="slideNo">1</span> / <span id="slideTotal">1</span></span>
+    <button class="icon-btn" onclick="toggleFullscreen()" title="전체화면">⛶</button>
+  </div>
+  <div class="slide-stage" id="slideStage">
+
+    <section class="slide slide-cover">
+      <div class="slide-kicker">코딩하루학원 경북도청센터 · 강사 임명진</div>
+      <h2>초보자를 위한 AI 스마트폰 활용</h2>
+      <p class="goal">🎯 스마트폰과 AI를 생활 속에서 편하게 쓸 수 있도록, 한 장씩 그대로 따라 하며 진행합니다.</p>
+      <div class="cover-meta">
+        <span>2026.9.4 – 12.18 · 매주 금 10:00–12:00</span>
+        <span>14회 × 2차시(28차시)</span>
+        <span>어르신/성인 18명</span>
+      </div>
+    </section>
+
+    <section class="slide slide-divider">
+      <div class="divider-num">01</div>
+      <div class="divider-date">9/4(금) · 완료</div>
+      <h2>반가워요, 스마트폰</h2>
+      <div class="preview-list">
+        <div><b>1차시</b> 반가워요 스마트폰 — 전원·밝기·글자 크기·기본 용어</div>
+        <div><b>2차시</b> 음성으로 말 걸어보기 — 빅스비/구글 어시스턴트</div>
+      </div>
+    </section>
+    <section class="slide">
+      <div class="slide-kicker">1회차 · 9/4 · 1차시 · 10:00–11:00 <span class="badge done">완료</span></div>
+      <h2>반가워요 스마트폰</h2>
+      <p class="goal">🎯 스마트폰을 켜고 끄고, 화면을 보기 편하게 조절할 수 있다.</p>
+      <div class="timebar">⏱ <b>도입 5분</b> · 시범 10분 · 단계별 실습 30분 · 개별연습·마무리 15분</div>
+      <ol class="steps">
+        <li>인사를 나누고, 오늘은 "전원 켜고 끄기·화면 조절"을 배운다고 안내해요.</li>
+        <li>선생님이 먼저 자기 폰으로 옆면 버튼 위치를 보여줘요.</li>
+        <li>각자 자기 폰 옆면을 만져보며 전원 버튼을 찾아봐요(선생님이 한 분씩 확인).</li>
+        <li>전원 버튼을 2~3초 눌러 화면을 꺼봐요.</li>
+        <li>다시 2~3초 눌러 화면을 켜봐요.</li>
+        <li>화면을 위로 쓸어 올리거나 지문을 대서 잠금을 풀어봐요.</li>
+        <li>화면 위쪽에서 아래로 손가락으로 쓸어내려 '빠른 설정창'을 열어요.</li>
+        <li>밝기 막대를 손가락으로 밀어서 밝게·어둡게 3번씩 바꿔봐요.</li>
+        <li>설정(톱니바퀴) → 디스플레이 → 글자 크기와 스타일 로 들어가요.</li>
+        <li>글자 크기 막대를 가장 크게, 다시 원하는 크기로 조절해봐요.</li>
+        <li>홈 화면 · 앱 · 와이파이 라는 말의 뜻을 한 분씩 짚어가며 설명해요.</li>
+        <li>(개별 연습) 지금까지 한 것(켜기·끄기·밝기·글자크기)을 혼자서 처음부터 다시 해봐요.</li>
+        <li>(마무리) 옆 사람과 서로 화면 밝기를 바꿔서 보여주며 확인해요.</li>
+      </ol>
+      <div class="tip"><b>💡 강사 tip</b> 옆면 버튼 위치가 기종마다 달라요. 학생 폰을 한 분씩 직접 확인해주세요.</div>
+    </section>
+    <section class="slide">
+      <div class="slide-kicker">1회차 · 9/4 · 2차시 · 11:00–12:00 <span class="badge done">완료</span></div>
+      <h2>음성으로 말 걸어보기</h2>
+      <p class="goal">🎯 손 안 대고 음성으로 스마트폰에 말을 걸어본다.</p>
+      <div class="timebar">⏱ <b>도입 5분</b> · 시범 10분 · 단계별 실습 30분 · 개별연습·마무리 15분</div>
+      <ol class="steps">
+        <li>지난 시간에 배운 화면 켜기·밝기 조절을 다 같이 한 번 복습해요.</li>
+        <li>오늘은 "음성으로 말 걸기"를 배운다고 안내해요.</li>
+        <li>"하이 빅스비"라고 소리 내어 말해봐요.</li>
+        <li>반응이 있는 분, 없는 분을 손 들어 확인해요.</li>
+        <li>반응이 없는 기종은 빅스비가 없는 것 — 대신 구글 어시스턴트를 쓸 거라고 설명해요.</li>
+        <li>설정 → 구글 → 모든 서비스 → 검색, 어시스턴트, 음성 순서로 함께 들어가요.</li>
+        <li>'Voice Match(음성 인식)' 항목을 찾아 켜요.</li>
+        <li>"오케이 구글"을 소리 내어 3번 따라 말해 목소리를 등록해요.</li>
+        <li>등록이 끝나면 "오케이 구글, 지금 몇 시야?"라고 물어봐요.</li>
+        <li>"오케이 구글, 오늘 날씨 어때?"도 이어서 물어봐요.</li>
+        <li>(개별 연습) 각자 원하는 질문을 하나씩 만들어 직접 말해봐요.</li>
+        <li>(마무리) 옆 사람에게 자기가 물어본 질문과 답을 소개해봐요.</li>
+      </ol>
+      <div class="tip"><b>💡 강사 tip</b> 처음엔 등록이 잘 안 될 수 있어요. 조용한 곳에서 또박또박 3번 반복하게 도와주세요.</div>
+    </section>
+
+    <section class="slide slide-divider">
+      <div class="divider-num">02</div>
+      <div class="divider-date">9/11(금) · 완료</div>
+      <h2>AI 비서와 갤러리 첫걸음</h2>
+      <div class="preview-list">
+        <div><b>3차시</b> 제미나이 연결하기</div>
+        <div><b>4차시</b> 갤러리 활용 첫걸음</div>
+      </div>
+    </section>
+    <section class="slide">
+      <div class="slide-kicker">2회차 · 9/11 · 3차시 · 10:00–11:00 <span class="badge done">완료</span></div>
+      <h2>제미나이 연결하기</h2>
+      <p class="goal">🎯 제미나이 앱을 설치하고 음성 비서와 연결한다.</p>
+      <div class="timebar">⏱ <b>도입 5분</b> · 시범 10분 · 단계별 실습 30분 · 개별연습·마무리 15분</div>
+      <ol class="steps">
+        <li>지난 시간 "오케이 구글" 음성 등록을 잘 했는지 한 분씩 확인해요.</li>
+        <li>오늘은 제미나이 앱을 설치해 음성 비서와 연결한다고 안내해요.</li>
+        <li>Play 스토어 아이콘을 찾아 눌러요.</li>
+        <li>검색창에 '제미나이'라고 입력해요.</li>
+        <li>설치 버튼을 눌러 앱을 설치해요.</li>
+        <li>설치가 끝나면 열기를 눌러 앱을 실행해요.</li>
+        <li>화면 안내에 따라 구글 계정으로 로그인해요.</li>
+        <li>설정에서 '어시스턴트 앱'을 제미나이로 바꿔줘요.</li>
+        <li>"헤이 구글, 오늘 날씨 어때?"라고 물어봐요.</li>
+        <li>"헤이 구글, 지금 몇 시야?"도 이어서 물어봐요.</li>
+        <li>(개별 연습) 각자 다른 질문을 만들어 제미나이에게 직접 물어봐요.</li>
+        <li>(마무리) 로그인이 안 되는 분은 남아서 개별로 도와드려요.</li>
+      </ol>
+      <div class="tip"><b>💡 강사 tip</b> 구글 계정 아이디·비밀번호를 미리 적어오시라고 지난 시간에 안내해주세요.</div>
+    </section>
+    <section class="slide">
+      <div class="slide-kicker">2회차 · 9/11 · 4차시 · 11:00–12:00 <span class="badge done">완료</span></div>
+      <h2>갤러리 활용 첫걸음</h2>
+      <p class="goal">🎯 사진을 찾고 정리하는 기본기를 익힌다.</p>
+      <div class="timebar">⏱ <b>도입 5분</b> · 시범 10분 · 단계별 실습 30분 · 개별연습·마무리 15분</div>
+      <ol class="steps">
+        <li>지난 시간 제미나이 연결이 잘 됐는지 다 같이 확인해요.</li>
+        <li>오늘은 갤러리에서 사진을 찾고 정리하는 법을 배운다고 안내해요.</li>
+        <li>갤러리 앱을 열어요.</li>
+        <li>위쪽 돋보기(검색) 아이콘을 눌러요.</li>
+        <li>'고양이'처럼 원하는 단어를 입력해 검색해봐요.</li>
+        <li>검색 결과가 자동으로 나오는 걸 함께 확인해요.</li>
+        <li>최근 항목 탭을 눌러 요즘 찍은 사진을 봐요.</li>
+        <li>즐겨찾기(하트)에 담고 싶은 사진 하나를 길게 눌러 하트를 눌러요.</li>
+        <li>필요 없는 사진 하나를 골라 휴지통 아이콘으로 삭제해요.</li>
+        <li>'휴지통' 메뉴에 들어가 방금 지운 사진을 다시 복구해봐요.</li>
+        <li>(개별 연습) 각자 원하는 단어로 3번 이상 사진을 검색해봐요.</li>
+        <li>(마무리) 옆 사람과 서로 찾은 사진을 보여줘요.</li>
+      </ol>
+      <div class="tip"><b>💡 강사 tip</b> 삭제해도 30일 안엔 복구된다고 안심시켜 주세요.</div>
+    </section>
+
+    <section class="slide slide-divider">
+      <div class="divider-num">03</div>
+      <div class="divider-date">9/18(금)</div>
+      <h2>소통하기 : 카카오톡</h2>
+      <div class="preview-list">
+        <div><b>5차시</b> 카카오톡 시작하기</div>
+        <div><b>6차시</b> 카카오톡으로 소통하기</div>
+      </div>
+    </section>
+    <section class="slide">
+      <div class="slide-kicker">3회차 · 9/18 · 5차시 · 10:00–11:00</div>
+      <h2>카카오톡 시작하기</h2>
+      <p class="goal">🎯 카카오톡을 설치하고 프로필을 꾸미고 친구를 추가한다.</p>
+      <div class="timebar">⏱ <b>도입 5분</b> · 시범 10분 · 단계별 실습 30분 · 개별연습·마무리 15분</div>
+      <ol class="steps">
+        <li>지난 시간 배운 사진 검색·삭제·복구를 짧게 복습해요.</li>
+        <li>오늘은 카카오톡을 설치하고 프로필을 만든다고 안내해요.</li>
+        <li>카카오톡이 이미 있는지 확인, 없으면 Play 스토어에서 설치해요.</li>
+        <li>앱을 열고 전화번호로 로그인(또는 가입)해요.</li>
+        <li>왼쪽 아래 '친구' 탭을 눌러요.</li>
+        <li>맨 위 내 프로필을 눌러요.</li>
+        <li>프로필 사진 자리를 눌러 갤러리에서 사진을 골라 등록해요.</li>
+        <li>상태메시지 칸을 눌러 짧은 인사말을 적어봐요.</li>
+        <li>친구 탭 → '+' 버튼을 눌러요.</li>
+        <li>이름이나 전화번호로 친구 한 명을 검색해 추가해요.</li>
+        <li>추가한 친구를 눌러 "안녕하세요" 메시지를 보내봐요.</li>
+        <li>(개별 연습) 옆 사람을 친구로 추가하고 서로 메시지를 보내봐요.</li>
+        <li>(마무리) 프로필 사진·상태메시지가 잘 등록됐는지 한 분씩 확인해요.</li>
+      </ol>
+      <div class="tip"><b>💡 강사 tip</b> 프로필 사진 등록만으로도 큰 성취감을 느끼는 분들이 많아요. 다 함께 확인해주세요.</div>
+    </section>
+    <section class="slide">
+      <div class="slide-kicker">3회차 · 9/18 · 6차시 · 11:00–12:00</div>
+      <h2>카카오톡으로 소통하기</h2>
+      <p class="goal">🎯 사진·영상·위치 공유와 영상통화, 단체방을 다뤄본다.</p>
+      <div class="timebar">⏱ <b>도입 5분</b> · 시범 10분 · 단계별 실습 30분 · 개별연습·마무리 15분</div>
+      <ol class="steps">
+        <li>지난 시간 만든 프로필과 친구 목록을 다 같이 확인해요.</li>
+        <li>오늘은 사진·위치 공유와 영상통화, 단체방을 배운다고 안내해요.</li>
+        <li>친구와의 대화창을 열어요.</li>
+        <li>'+' 버튼 → 앨범 → 사진 한 장을 골라 보내봐요.</li>
+        <li>'+' 버튼 → 위치 → 현재 위치 공유를 눌러 내 위치를 보내봐요.</li>
+        <li>대화창 오른쪽 위 전화 모양 아이콘을 눌러요.</li>
+        <li>영상통화를 선택해 짝과 실제로 걸어봐요.</li>
+        <li>친구 탭에서 여러 명을 선택해 단체채팅방을 만들어요.</li>
+        <li>방 안에서 '+' → 공지사항을 눌러 공지를 등록해요.</li>
+        <li>'+' → 투표를 눌러 간단한 투표를 만들어봐요.</li>
+        <li>(개별 연습) 짝을 바꿔가며 사진 보내기·영상통화를 한 번씩 더 해봐요.</li>
+        <li>(마무리) 오늘 가장 재미있었던 기능을 한 명씩 말해봐요.</li>
+      </ol>
+      <div class="tip"><b>💡 강사 tip</b> 짝을 지어 서로에게 실제로 메시지를 보내보게 하면 재미있어 해요.</div>
+    </section>
+
+    <section class="slide slide-divider">
+      <div class="divider-num">04</div>
+      <div class="divider-date">10/2(금)</div>
+      <h2>내 손안의 카메라</h2>
+      <div class="preview-list">
+        <div><b>7차시</b> 내 손안의 카메라</div>
+        <div><b>8차시</b> 사진 정리와 AI 렌즈</div>
+      </div>
+    </section>
+    <section class="slide">
+      <div class="slide-kicker">4회차 · 10/2 · 7차시 · 10:00–11:00</div>
+      <h2>내 손안의 카메라</h2>
+      <p class="goal">🎯 사진을 잘 찍는 기본기(초점·줌·연속촬영)를 익힌다.</p>
+      <div class="timebar">⏱ <b>도입 5분</b> · 시범 10분 · 단계별 실습 30분 · 개별연습·마무리 15분</div>
+      <ol class="steps">
+        <li>지난 시간 배운 카카오톡 기능을 짧게 복습해요.</li>
+        <li>오늘은 사진을 잘 찍는 법을 배운다고 안내해요.</li>
+        <li>카메라 앱을 열어요.</li>
+        <li>찍고 싶은 대상을 화면에서 손가락으로 톡 눌러 초점을 맞춰봐요.</li>
+        <li>초점이 맞으면 네모 표시가 나타나는 걸 확인해요.</li>
+        <li>두 손가락을 화면에 대고 벌려 확대(줌)해봐요.</li>
+        <li>두 손가락을 오므려 다시 축소해봐요.</li>
+        <li>셔터를 길게 눌러 연속 촬영이 되는 걸 확인해요.</li>
+        <li>타이머 아이콘을 눌러 3초 뒤에 찍히도록 맞춰봐요.</li>
+        <li>타이머로 사진을 한 장 찍어봐요.</li>
+        <li>(개별 연습) 교실 안 물건을 골라 초점·줌·타이머를 각각 활용해 3장씩 찍어봐요.</li>
+        <li>(마무리) 가장 잘 찍은 사진 한 장을 옆 사람에게 보여줘요.</li>
+      </ol>
+      <div class="tip"><b>💡 강사 tip</b> 손이 떨리시는 분은 타이머 + 거치를 추천해주세요.</div>
+    </section>
+    <section class="slide">
+      <div class="slide-kicker">4회차 · 10/2 · 8차시 · 11:00–12:00</div>
+      <h2>사진 정리와 AI 렌즈</h2>
+      <p class="goal">🎯 앨범으로 정리하고, AI 렌즈로 사물 정보를 찾아본다.</p>
+      <div class="timebar">⏱ <b>도입 5분</b> · 시범 10분 · 단계별 실습 30분 · 개별연습·마무리 15분</div>
+      <ol class="steps">
+        <li>지난 시간 찍은 사진들을 갤러리에서 함께 확인해요.</li>
+        <li>오늘은 앨범 정리와 AI 렌즈를 배운다고 안내해요.</li>
+        <li>갤러리 → 앨범 → '+'를 눌러요.</li>
+        <li>새 앨범 이름을 '텃밭'처럼 정해서 만들어요.</li>
+        <li>사진을 길게 눌러 여러 장을 한꺼번에 선택해요.</li>
+        <li>선택한 사진을 방금 만든 앨범으로 이동해요.</li>
+        <li>필요 없는 사진이나 앨범을 하나 골라 삭제해봐요.</li>
+        <li>카메라(또는 갤러리)에서 렌즈 아이콘을 찾아요.</li>
+        <li>렌즈로 꽃이나 화분을 비춰봐요.</li>
+        <li>화면에 뜨는 이름·정보를 함께 읽어요.</li>
+        <li>렌즈로 간판이나 약봉지 글씨도 비춰봐요.</li>
+        <li>(개별 연습) 각자 원하는 사물 2~3개를 렌즈로 비춰 정보를 찾아봐요.</li>
+        <li>(마무리) 새로 알게 된 정보 하나씩을 발표해요.</li>
+      </ol>
+      <div class="tip"><b>💡 강사 tip</b> 마당의 꽃, 약봉지 글씨 등 실생활 사물로 실습하면 몰입도가 높아요.</div>
+    </section>
+
+    <section class="slide slide-divider">
+      <div class="divider-num">05</div>
+      <div class="divider-date">10/16(금)</div>
+      <h2>AI에게 글 부탁하기</h2>
+      <div class="preview-list">
+        <div><b>9차시</b> AI에게 문자 부탁하기</div>
+        <div><b>10차시</b> 축하 문구 만들고 보내기</div>
+      </div>
+    </section>
+    <section class="slide">
+      <div class="slide-kicker">5회차 · 10/16 · 9차시 · 10:00–11:00</div>
+      <h2>AI에게 문자 부탁하기</h2>
+      <p class="goal">🎯 AI로 문자·편지 문구를 다듬거나 새로 써본다.</p>
+      <div class="timebar">⏱ <b>도입 5분</b> · 시범 10분 · 단계별 실습 30분 · 개별연습·마무리 15분</div>
+      <ol class="steps">
+        <li>지난 시간 배운 AI 렌즈 사용법을 짧게 복습해요.</li>
+        <li>오늘은 AI에게 문자·편지를 부탁하는 법을 배운다고 안내해요.</li>
+        <li>제미나이 앱을 열어요.</li>
+        <li>마이크 아이콘을 눌러 말로 입력하는 법을 먼저 보여줘요.</li>
+        <li>"손주에게 보낼 안부 문자를 다정하게 써줘"라고 말해봐요.</li>
+        <li>나온 문장을 다 같이 소리 내어 읽어봐요.</li>
+        <li>마음에 안 들면 "더 짧게 써줘"라고 다시 요청해봐요.</li>
+        <li>"자녀에게 보낼 편지를 감사 인사로 써줘"도 시도해봐요.</li>
+        <li>완성된 문장을 손가락으로 길게 눌러 '복사'를 선택해요.</li>
+        <li>(개별 연습) 각자 보내고 싶은 사람을 떠올려 직접 문구를 부탁해봐요.</li>
+        <li>(마무리) 완성한 문구를 옆 사람에게 읽어줘요.</li>
+      </ol>
+      <div class="tip"><b>💡 강사 tip</b> 하고 싶은 말을 먼저 말로 해보고, AI가 다듬게 하는 순서로 안내하면 쉬워요.</div>
+    </section>
+    <section class="slide">
+      <div class="slide-kicker">5회차 · 10/16 · 10차시 · 11:00–12:00</div>
+      <h2>축하 문구 만들고 보내기</h2>
+      <p class="goal">🎯 경조사 문구를 AI로 만들어 카카오톡으로 보낸다.</p>
+      <div class="timebar">⏱ <b>도입 5분</b> · 시범 10분 · 단계별 실습 30분 · 개별연습·마무리 15분</div>
+      <ol class="steps">
+        <li>지난 시간 만든 문구와 복사하는 법을 복습해요.</li>
+        <li>오늘은 축하 문구를 만들어 카카오톡으로 보낸다고 안내해요.</li>
+        <li>제미나이에 "손주 돌잔치 축하 문구 써줘"라고 요청해요.</li>
+        <li>나온 문장 중 마음에 드는 것을 복사해요.</li>
+        <li>카카오톡 대화창을 열어요.</li>
+        <li>입력창을 길게 눌러 '붙여넣기'를 선택해요.</li>
+        <li>붙여넣은 문구를 확인하고 필요하면 조금 고쳐요.</li>
+        <li>이모티콘 아이콘을 눌러 어울리는 이모티콘을 하나 골라요.</li>
+        <li>문구와 이모티콘을 함께 전송해봐요.</li>
+        <li>(개별 연습) 다른 경조사(생일·졸업 등) 문구도 하나 더 만들어 보내봐요.</li>
+        <li>(마무리) 받은 사람 반응이 오면 함께 확인해요.</li>
+      </ol>
+      <div class="tip"><b>💡 강사 tip</b> 지난 시간에 배운 복사·붙여넣기 방법을 다시 한 번 짚어주세요.</div>
+    </section>
+
+    <section class="slide slide-divider">
+      <div class="divider-num">06</div>
+      <div class="divider-date">10/23(금)</div>
+      <h2>AI 사진 편집 1</h2>
+      <div class="preview-list">
+        <div><b>11차시</b> 지우기</div>
+        <div><b>12차시</b> 선명하게</div>
+      </div>
+    </section>
+    <section class="slide">
+      <div class="slide-kicker">6회차 · 10/23 · 11차시 · 10:00–11:00</div>
+      <h2>AI 사진 편집 1 — 지우기</h2>
+      <p class="goal">🎯 사진 속 필요 없는 것을 지우고 밝기를 보정한다.</p>
+      <div class="timebar">⏱ <b>도입 5분</b> · 시범 10분 · 단계별 실습 30분 · 개별연습·마무리 15분</div>
+      <ol class="steps">
+        <li>지난 시간까지 만든 사진·문구들을 갤러리에서 훑어봐요.</li>
+        <li>오늘은 사진 속 필요 없는 것을 지우는 법을 배운다고 안내해요.</li>
+        <li>갤러리에서 사진 한 장을 열어요.</li>
+        <li>아래쪽 '편집'(연필 아이콘)을 눌러요.</li>
+        <li>'AI 지우개' 또는 '오브젝트 지우기' 메뉴를 찾아요.</li>
+        <li>지우고 싶은 사람이나 물건을 손가락으로 문질러 표시해요.</li>
+        <li>'지우기' 버튼을 눌러 결과를 확인해요.</li>
+        <li>밝기 슬라이더를 밀어 사진을 더 밝게 만들어봐요.</li>
+        <li>색감(채도) 슬라이더도 조절해봐요.</li>
+        <li>'저장'을 눌러요(원본은 그대로 두고 사본으로 저장).</li>
+        <li>(개별 연습) 각자 사진 한 장을 골라 지우개 기능을 직접 써봐요.</li>
+        <li>(마무리) 지우기 전·후 사진을 옆 사람과 비교해봐요.</li>
+      </ol>
+      <div class="tip"><b>💡 강사 tip</b> 결과가 마음에 안 들면 '실행 취소'로 되돌릴 수 있다고 안심시켜주세요.</div>
+    </section>
+    <section class="slide">
+      <div class="slide-kicker">6회차 · 10/23 · 12차시 · 11:00–12:00</div>
+      <h2>AI 사진 편집 1 — 선명하게</h2>
+      <p class="goal">🎯 흐린 사진을 선명하게 만들고 전후를 비교한다.</p>
+      <div class="timebar">⏱ <b>도입 5분</b> · 시범 10분 · 단계별 실습 30분 · 개별연습·마무리 15분</div>
+      <ol class="steps">
+        <li>지난 시간 지우개 기능을 잘 썼는지 한 분씩 확인해요.</li>
+        <li>오늘은 흐린 사진을 선명하게 만드는 법을 배운다고 안내해요.</li>
+        <li>흐릿하게 찍힌 사진을 하나 골라요.</li>
+        <li>편집 메뉴에서 '화질 개선' 또는 '선명하게' 기능을 찾아요.</li>
+        <li>기능을 적용해봐요.</li>
+        <li>화면을 반으로 나눠 전·후 비교 화면을 함께 봐요.</li>
+        <li>마음에 드는 정도로 강도를 조절해봐요.</li>
+        <li>결과를 저장해요.</li>
+        <li>저장한 사진을 즐겨찾기(하트)에 담아요.</li>
+        <li>(개별 연습) 각자 흐린 사진 1~2장을 골라 선명하게 만들어봐요.</li>
+        <li>(마무리) 가장 좋아진 사진을 한 장씩 보여줘요.</li>
+      </ol>
+      <div class="tip"><b>💡 강사 tip</b> 기능 이름은 기종·앱 버전마다 달라요. 미리 학생 폰에서 위치를 확인해두세요.</div>
+    </section>
+
+    <section class="slide slide-divider">
+      <div class="divider-num">07</div>
+      <div class="divider-date">10/30(금)</div>
+      <h2>AI 사진 편집 2</h2>
+      <div class="preview-list">
+        <div><b>13차시</b> 배경과 인물</div>
+        <div><b>14차시</b> 오래된 사진 복원</div>
+      </div>
+    </section>
+    <section class="slide">
+      <div class="slide-kicker">7회차 · 10/30 · 13차시 · 10:00–11:00</div>
+      <h2>AI 사진 편집 2 — 배경과 인물</h2>
+      <p class="goal">🎯 배경을 바꾸고 인물 사진을 보정한다.</p>
+      <div class="timebar">⏱ <b>도입 5분</b> · 시범 10분 · 단계별 실습 30분 · 개별연습·마무리 15분</div>
+      <ol class="steps">
+        <li>지난 시간 배운 화질 개선 기능을 복습해요.</li>
+        <li>오늘은 배경 바꾸기와 인물 보정을 배운다고 안내해요.</li>
+        <li>인물이 있는 사진을 하나 골라요.</li>
+        <li>편집에서 '배경 지우기/바꾸기' 메뉴를 찾아요.</li>
+        <li>배경을 단색으로 한 번 바꿔봐요.</li>
+        <li>다른 사진으로도 배경을 바꿔봐요.</li>
+        <li>'인물 사진 보정' 메뉴로 들어가요.</li>
+        <li>피부·밝기 슬라이더를 자연스럽게 조절해요.</li>
+        <li>너무 과하게 보정하면 부자연스럽다는 걸 예시로 보여줘요.</li>
+        <li>결과를 저장해요.</li>
+        <li>(개별 연습) 각자 인물 사진으로 배경·보정을 직접 해봐요.</li>
+        <li>(마무리) 자연스러운 정도를 서로 비교해봐요.</li>
+      </ol>
+      <div class="tip"><b>💡 강사 tip</b> 과하게 보정하면 부자연스러워진다고 미리 안내해주세요.</div>
+    </section>
+    <section class="slide">
+      <div class="slide-kicker">7회차 · 10/30 · 14차시 · 11:00–12:00</div>
+      <h2>AI 사진 편집 2 — 오래된 사진 복원</h2>
+      <p class="goal">🎯 오래된 사진을 AI로 복원해 함께 감상한다.</p>
+      <div class="timebar">⏱ <b>도입 5분</b> · 시범 10분 · 단계별 실습 30분 · 개별연습·마무리 15분</div>
+      <ol class="steps">
+        <li>지난 시간 배운 배경·인물 보정을 복습해요.</li>
+        <li>오늘은 미리 가져온 오래된 가족사진을 AI로 복원한다고 안내해요.</li>
+        <li>오래되거나 손상된 사진을 카메라로 찍어 갤러리에 저장해요.</li>
+        <li>갤러리(또는 포토스) 앱에서 '사진 복원' 기능을 찾아요.</li>
+        <li>방금 저장한 사진을 골라 복원 기능을 실행해요.</li>
+        <li>자동 보정 결과를 확인해요.</li>
+        <li>결과가 마음에 들면 저장해요.</li>
+        <li>복원 전·후 사진을 나란히 놓고 비교해봐요.</li>
+        <li>(개별 연습) 각자 가져온 사진으로 복원을 직접 해봐요.</li>
+        <li>(마무리) 복원된 가족사진을 옆 사람과 함께 감상하고 소개해요.</li>
+      </ol>
+      <div class="tip"><b>💡 강사 tip</b> 미리 학생들에게 오래된 가족사진을 한 장씩 가져오시라고 안내하면 효과적이에요.</div>
+    </section>
+
+    <section class="slide slide-divider">
+      <div class="divider-num">08</div>
+      <div class="divider-date">11/6(금)</div>
+      <h2>사진이 그림으로!</h2>
+      <div class="preview-list">
+        <div><b>15차시</b> 사진이 그림으로!</div>
+        <div><b>16차시</b> 나만의 캐리커처</div>
+      </div>
+    </section>
+    <section class="slide">
+      <div class="slide-kicker">8회차 · 11/6 · 15차시 · 10:00–11:00</div>
+      <h2>사진이 그림으로!</h2>
+      <p class="goal">🎯 내 사진을 만화·유화 스타일 그림으로 바꿔본다.</p>
+      <div class="timebar">⏱ <b>도입 5분</b> · 시범 10분 · 단계별 실습 30분 · 개별연습·마무리 15분</div>
+      <ol class="steps">
+        <li>지난 시간 복원한 사진들을 함께 감상해요.</li>
+        <li>오늘은 사진을 만화·유화 그림으로 바꾼다고 안내해요.</li>
+        <li>풍경 사진 한 장을 골라요.</li>
+        <li>편집 앱(또는 갤러리 AI 기능)에서 '스타일 변환' 메뉴를 찾아요.</li>
+        <li>만화 스타일을 적용해봐요.</li>
+        <li>유화 스타일도 적용해봐요.</li>
+        <li>두 결과를 비교해봐요.</li>
+        <li>마음에 드는 것을 저장해요.</li>
+        <li>(개별 연습) 각자 사진 2장 이상으로 다른 스타일을 시도해봐요.</li>
+        <li>(마무리) 가장 마음에 드는 그림을 한 장씩 발표해요.</li>
+      </ol>
+      <div class="tip"><b>💡 강사 tip</b> 처음엔 본인 얼굴 사진보다 풍경 사진으로 연습하면 부담이 적어요.</div>
+    </section>
+    <section class="slide">
+      <div class="slide-kicker">8회차 · 11/6 · 16차시 · 11:00–12:00</div>
+      <h2>나만의 캐리커처</h2>
+      <p class="goal">🎯 캐리커처를 만들어 프로필 사진으로 바꾼다.</p>
+      <div class="timebar">⏱ <b>도입 5분</b> · 시범 10분 · 단계별 실습 30분 · 개별연습·마무리 15분</div>
+      <ol class="steps">
+        <li>지난 시간 만든 그림들을 복습해요.</li>
+        <li>오늘은 캐리커처를 만들어 프로필 사진으로 바꾼다고 안내해요.</li>
+        <li>캐리커처 기능을 실행해요.</li>
+        <li>본인 얼굴 사진을 선택해요.</li>
+        <li>원하는 스타일을 골라요.</li>
+        <li>캐리커처를 생성해봐요.</li>
+        <li>결과물을 저장해요.</li>
+        <li>카카오톡 프로필 사진으로 등록하는 법을 다시 짚어줘요(5차시 복습).</li>
+        <li>등록해봐요.</li>
+        <li>가족 사진으로도 캐리커처를 하나 더 만들어봐요.</li>
+        <li>(개별 연습) 각자 원하는 사진으로 한 번 더 만들어봐요.</li>
+        <li>(마무리) 서로의 캐리커처 프로필을 구경해요.</li>
+      </ol>
+      <div class="tip"><b>💡 강사 tip</b> 프로필 변경 방법은 5차시 내용을 다시 짚어주면 좋아요.</div>
+    </section>
+
+    <section class="slide slide-divider">
+      <div class="divider-num">09</div>
+      <div class="divider-date">11/13(금)</div>
+      <h2>상상을 현실로</h2>
+      <div class="preview-list">
+        <div><b>17차시</b> 상상을 현실로 1</div>
+        <div><b>18차시</b> 상상을 현실로 2</div>
+      </div>
+    </section>
+    <section class="slide">
+      <div class="slide-kicker">9회차 · 11/13 · 17차시 · 10:00–11:00</div>
+      <h2>상상을 현실로 1</h2>
+      <p class="goal">🎯 문장으로 그림을 만드는 AI 이미지 생성 기초를 익힌다.</p>
+      <div class="timebar">⏱ <b>도입 5분</b> · 시범 10분 · 단계별 실습 30분 · 개별연습·마무리 15분</div>
+      <ol class="steps">
+        <li>지난 시간 만든 캐리커처를 다시 한 번 감상해요.</li>
+        <li>오늘은 문장으로 그림을 만드는 AI를 배운다고 안내해요.</li>
+        <li>제미나이(또는 이미지 생성 앱)를 열어요.</li>
+        <li>"노을 지는 바닷가 그림 그려줘"를 함께 입력해봐요.</li>
+        <li>생성된 그림을 확인해요.</li>
+        <li>"산속 작은 집 그림 그려줘"도 시도해봐요.</li>
+        <li>두 그림을 비교해봐요.</li>
+        <li>(개별 연습) 각자 좋아하는 풍경을 문장으로 만들어 그려봐요.</li>
+        <li>(마무리) 만든 그림을 한 장씩 보여주며 소개해요.</li>
+      </ol>
+      <div class="tip"><b>💡 강사 tip</b> 처음엔 쉬운 풍경 문장으로 성공 경험을 먼저 만들어주세요.</div>
+    </section>
+    <section class="slide">
+      <div class="slide-kicker">9회차 · 11/13 · 18차시 · 11:00–12:00</div>
+      <h2>상상을 현실로 2</h2>
+      <p class="goal">🎯 원하는 그림이 나오도록 프롬프트를 바꿔가며 만들어본다.</p>
+      <div class="timebar">⏱ <b>도입 5분</b> · 시범 10분 · 단계별 실습 30분 · 개별연습·마무리 15분</div>
+      <ol class="steps">
+        <li>지난 시간 만든 그림들을 복습해요.</li>
+        <li>오늘은 원하는 그림이 나오도록 문장을 바꿔가며 만든다고 안내해요.</li>
+        <li>"손주 이름 '민준'이 들어간 생일 축하 그림 그려줘"처럼 구체적으로 요청해요.</li>
+        <li>결과를 확인해요.</li>
+        <li>"더 화사하게 해줘"라고 다시 요청해봐요.</li>
+        <li>"글씨를 크게 넣어줘"도 요청해봐요.</li>
+        <li>달라진 결과를 비교해요.</li>
+        <li>마음에 드는 그림을 저장해요.</li>
+        <li>(개별 연습) 각자 손주·자녀 이름을 넣어 축하 그림을 만들어봐요.</li>
+        <li>(마무리) 완성한 그림을 카카오톡으로 가족에게 보내봐요.</li>
+      </ol>
+      <div class="tip"><b>💡 강사 tip</b> 한 번에 완벽한 결과가 안 나올 수 있다고 미리 말씀드리면 좌절감이 줄어요.</div>
+    </section>
+
+    <section class="slide slide-divider">
+      <div class="divider-num">10</div>
+      <div class="divider-date">11/20(금)</div>
+      <h2>AI로 영상 만들기</h2>
+      <div class="preview-list">
+        <div><b>19차시</b> AI로 영상 만들기 1</div>
+        <div><b>20차시</b> AI로 영상 만들기 2</div>
+      </div>
+    </section>
+    <section class="slide">
+      <div class="slide-kicker">10회차 · 11/20 · 19차시 · 10:00–11:00</div>
+      <h2>AI로 영상 만들기 1</h2>
+      <p class="goal">🎯 사진 여러 장으로 짧은 영상을 만든다.</p>
+      <div class="timebar">⏱ <b>도입 5분</b> · 시범 10분 · 단계별 실습 30분 · 개별연습·마무리 15분</div>
+      <ol class="steps">
+        <li>지난 시간 만든 그림들을 함께 봐요.</li>
+        <li>오늘은 사진 여러 장으로 짧은 영상을 만든다고 안내해요.</li>
+        <li>갤러리(또는 영상 만들기 앱)를 열어요.</li>
+        <li>마음에 드는 사진 5~10장을 선택해요.</li>
+        <li>'영상 만들기' 기능을 눌러요.</li>
+        <li>자동 생성되는 과정을 함께 지켜봐요.</li>
+        <li>완성된 영상을 재생해봐요.</li>
+        <li>배경 음악 메뉴에 들어가요.</li>
+        <li>원하는 음악을 하나 골라 넣어봐요.</li>
+        <li>(개별 연습) 각자 다른 사진 5장으로 영상을 만들어봐요.</li>
+        <li>(마무리) 완성된 영상을 옆 사람과 함께 봐요.</li>
+      </ol>
+      <div class="tip"><b>💡 강사 tip</b> 사진 순서가 뒤바뀌어도 괜찮다고 안심시켜주세요.</div>
+    </section>
+    <section class="slide">
+      <div class="slide-kicker">10회차 · 11/20 · 20차시 · 11:00–12:00</div>
+      <h2>AI로 영상 만들기 2</h2>
+      <p class="goal">🎯 완성한 영상을 가족과 공유한다.</p>
+      <div class="timebar">⏱ <b>도입 5분</b> · 시범 10분 · 단계별 실습 30분 · 개별연습·마무리 15분</div>
+      <ol class="steps">
+        <li>지난 시간 만든 영상을 다시 재생해봐요.</li>
+        <li>오늘은 완성한 영상을 가족과 나눈다고 안내해요.</li>
+        <li>영상 화면에서 공유 아이콘을 눌러요.</li>
+        <li>카카오톡으로 보내기를 선택해요.</li>
+        <li>보낼 가족을 선택해 전송해요.</li>
+        <li>유튜브 아이콘을 눌러 업로드 화면으로 들어가요.</li>
+        <li>공개 범위를 '비공개'로 설정해요.</li>
+        <li>업로드를 눌러봐요.</li>
+        <li>(개별 연습) 각자 영상을 하나씩 가족에게 전송해봐요.</li>
+        <li>(마무리) 다 같이 영상을 감상하고 소감을 나눠요.</li>
+      </ol>
+      <div class="tip"><b>💡 강사 tip</b> 유튜브 업로드 시 '비공개'로 설정하는 법을 꼭 짚어주세요.</div>
+    </section>
+
+    <section class="slide slide-divider">
+      <div class="divider-num">11</div>
+      <div class="divider-date">11/27(금)</div>
+      <h2>AI 통역과 글 읽어주기</h2>
+      <div class="preview-list">
+        <div><b>21차시</b> AI 통역 활용하기</div>
+        <div><b>22차시</b> AI가 글 읽어주기</div>
+      </div>
+    </section>
+    <section class="slide">
+      <div class="slide-kicker">11회차 · 11/27 · 21차시 · 10:00–11:00</div>
+      <h2>AI 통역 활용하기</h2>
+      <p class="goal">🎯 사진 속 외국어를 우리말로 번역해본다.</p>
+      <div class="timebar">⏱ <b>도입 5분</b> · 시범 10분 · 단계별 실습 30분 · 개별연습·마무리 15분</div>
+      <ol class="steps">
+        <li>지난 시간 만든 영상을 짧게 복습해요.</li>
+        <li>오늘은 사진 속 외국어를 번역하는 법을 배운다고 안내해요.</li>
+        <li>카메라(또는 렌즈) 앱을 열어요.</li>
+        <li>번역 기능을 찾아요.</li>
+        <li>미리 준비한 외국어 메뉴판 사진을 비춰요.</li>
+        <li>화면에 뜨는 한글 번역을 함께 읽어요.</li>
+        <li>외국어 표지판 사진도 비춰봐요.</li>
+        <li>번역 결과를 비교해봐요.</li>
+        <li>(개별 연습) 각자 가져온 외국어 포장지·안내문을 번역해봐요.</li>
+        <li>(마무리) 새로 알게 된 단어를 한 개씩 말해봐요.</li>
+      </ol>
+      <div class="tip"><b>💡 강사 tip</b> 해외 여행 사진이나 수입 제품 포장지로 연습하면 흥미로워해요.</div>
+    </section>
+    <section class="slide">
+      <div class="slide-kicker">11회차 · 11/27 · 22차시 · 11:00–12:00</div>
+      <h2>AI가 글 읽어주기</h2>
+      <p class="goal">🎯 어려운 안내문을 쉬운 말로 풀이받고 소리로 듣는다.</p>
+      <div class="timebar">⏱ <b>도입 5분</b> · 시범 10분 · 단계별 실습 30분 · 개별연습·마무리 15분</div>
+      <ol class="steps">
+        <li>지난 시간 배운 번역 기능을 복습해요.</li>
+        <li>오늘은 어려운 안내문을 쉽게 풀이받고 소리로 듣는다고 안내해요.</li>
+        <li>카메라로 진료안내문이나 약 설명서를 찍어요.</li>
+        <li>AI 앱을 열어요.</li>
+        <li>"이 글을 쉽게 설명해줘"라고 요청해요.</li>
+        <li>풀어준 설명을 함께 읽어요.</li>
+        <li>'소리 내어 읽기' 기능을 찾아 켜요.</li>
+        <li>소리로 들어봐요.</li>
+        <li>(개별 연습) 각자 가져온 안내문·약 설명서로 직접 해봐요.</li>
+        <li>(마무리) 이해가 안 됐던 부분이 풀렸는지 한 분씩 확인해요.</li>
+      </ol>
+      <div class="tip"><b>💡 강사 tip</b> 실제 처방전·안내문을 하나씩 가져오시라고 미리 안내하면 실용적이에요.</div>
+    </section>
+
+    <section class="slide slide-divider">
+      <div class="divider-num">12</div>
+      <div class="divider-date">12/4(금)</div>
+      <h2>나들이 준비하기</h2>
+      <div class="preview-list">
+        <div><b>23차시</b> 나들이 준비하기 1 <span class="badge new">NEW</span></div>
+        <div><b>24차시</b> 나들이 준비하기 2 <span class="badge new">NEW</span></div>
+      </div>
+    </section>
+    <section class="slide">
+      <div class="slide-kicker">12회차 · 12/4 · 23차시 · 10:00–11:00 <span class="badge new">NEW</span></div>
+      <h2>나들이 준비하기 1</h2>
+      <p class="goal">🎯 지도·교통 앱을 쓰고 모바일 신분증을 만들어둔다.</p>
+      <div class="timebar">⏱ <b>도입 5분</b> · 시범 10분 · 단계별 실습 30분 · 개별연습·마무리 15분</div>
+      <ol class="steps">
+        <li>지난 시간 배운 번역·읽어주기 기능을 복습해요.</li>
+        <li>오늘은 지도·교통 앱과 모바일 신분증을 배운다고 안내해요.</li>
+        <li>지도 앱을 열어요.</li>
+        <li>현재 위치가 파란 점으로 표시되는지 확인해요.</li>
+        <li>목적지를 입력해 길찾기를 눌러요.</li>
+        <li>안내되는 경로를 함께 봐요.</li>
+        <li>버스·기차 예매 앱을 열어요.</li>
+        <li>원하는 시간대를 검색해봐요(실제 결제는 생략).</li>
+        <li>PASS 앱을 설치해요.</li>
+        <li>안내에 따라 통신사 본인인증을 진행해요.</li>
+        <li>인증이 끝나면 모바일 신분증을 등록해요.</li>
+        <li>(개별 연습) 각자 신분증 화면을 띄워 확인해봐요.</li>
+        <li>(마무리) 인증이 안 된 분은 남아서 개별로 도와드려요.</li>
+      </ol>
+      <div class="tip"><b>💡 강사 tip</b> PASS 본인인증은 시간이 걸릴 수 있어요. 통신사와 신분증을 미리 챙겨오시라 안내하세요.</div>
+    </section>
+    <section class="slide">
+      <div class="slide-kicker">12회차 · 12/4 · 24차시 · 11:00–12:00 <span class="badge new">NEW</span></div>
+      <h2>나들이 준비하기 2</h2>
+      <p class="goal">🎯 지역 모바일 상품권을 쓰고 일정을 AI에 물어본다.</p>
+      <div class="timebar">⏱ <b>도입 5분</b> · 시범 10분 · 단계별 실습 30분 · 개별연습·마무리 15분</div>
+      <ol class="steps">
+        <li>지난 시간 만든 모바일 신분증을 다시 한 번 확인해요.</li>
+        <li>오늘은 지역 상품권 앱과 일정 확인을 배운다고 안내해요.</li>
+        <li>문경사랑상품권 앱을 설치해요.</li>
+        <li>회원가입 절차를 함께 진행해요.</li>
+        <li>안내에 따라 소액으로 충전(또는 등록)을 해봐요.</li>
+        <li>가맹점 결제 화면 순서를 함께 확인해요(시연 위주).</li>
+        <li>유튜브 앱을 열어요.</li>
+        <li>관심 있는 주제를 검색해봐요.</li>
+        <li>구독 버튼을 눌러봐요.</li>
+        <li>제미나이에 "오늘 내 일정 알려줘"라고 물어봐요.</li>
+        <li>(개별 연습) 각자 관심사로 유튜브 검색·구독을 해봐요.</li>
+        <li>(마무리) 오늘 등록한 상품권·구독 채널을 한 개씩 소개해요.</li>
+      </ol>
+      <div class="tip"><b>💡 강사 tip</b> 실제 충전은 소액으로, 사용법 위주로 안내해주세요.</div>
+    </section>
+
+    <section class="slide slide-divider">
+      <div class="divider-num">13</div>
+      <div class="divider-date">12/11(금)</div>
+      <h2>키오스크와 AI 사기 예방</h2>
+      <div class="preview-list">
+        <div><b>25차시</b> 키오스크 실습과 간편결제 <span class="badge new">NEW</span></div>
+        <div><b>26차시</b> AI 사기 예방하기</div>
+      </div>
+    </section>
+    <section class="slide">
+      <div class="slide-kicker">13회차 · 12/11 · 25차시 · 10:00–11:00 <span class="badge new">NEW</span></div>
+      <h2>키오스크 실습과 간편결제</h2>
+      <p class="goal">🎯 무인단말기를 실습하고 삼성페이로 결제해본다.</p>
+      <div class="timebar">⏱ <b>도입 5분</b> · 시범 10분 · 단계별 실습 30분 · 개별연습·마무리 15분</div>
+      <ol class="steps">
+        <li>지난 시간 배운 상품권 앱을 복습해요.</li>
+        <li>오늘은 무인단말기와 삼성페이를 배운다고 안내해요.</li>
+        <li>교실에 준비한 키오스크(또는 모형 화면) 앞에 서봐요.</li>
+        <li>메뉴 화면에서 음식을 하나 골라 눌러요.</li>
+        <li>옵션 선택 화면을 따라가봐요.</li>
+        <li>결제 화면까지 가봐요.</li>
+        <li>병원 수납 키오스크 화면도 같은 방식으로 따라해봐요.</li>
+        <li>설정 → 삼성페이 앱을 열어요.</li>
+        <li>카드 등록 절차를 안내해요.</li>
+        <li>지문(또는 비밀번호)으로 결제 화면을 띄워봐요.</li>
+        <li>(개별 연습) 각자 키오스크 앞에서 처음부터 끝까지 혼자 해봐요.</li>
+        <li>(마무리) 뒷사람이 기다릴 때 당황하지 않는 법을 한 번 더 짚어줘요.</li>
+      </ol>
+      <div class="tip"><b>💡 강사 tip</b> 뒷사람이 기다릴 때 당황하지 않도록, 먼저 화면을 천천히 읽는 습관을 강조해주세요.</div>
+    </section>
+    <section class="slide">
+      <div class="slide-kicker">13회차 · 12/11 · 26차시 · 11:00–12:00</div>
+      <h2>AI 사기 예방하기</h2>
+      <p class="goal">🎯 스팸·보이스피싱·딥페이크를 구별하고 대응한다.</p>
+      <div class="timebar">⏱ <b>도입 5분</b> · 시범 10분 · 단계별 실습 30분 · 개별연습·마무리 15분</div>
+      <ol class="steps">
+        <li>지난 시간 배운 키오스크·삼성페이를 복습해요.</li>
+        <li>오늘은 스팸·보이스피싱·딥페이크 구별법을 배운다고 안내해요.</li>
+        <li>전화 앱을 열어요.</li>
+        <li>'스팸 차단' 설정 메뉴를 찾아 켜요.</li>
+        <li>알 수 없는 번호로 문자가 왔을 때 대처법을 예시로 보여줘요.</li>
+        <li>실제 보이스피싱 사례 영상을 함께 봐요.</li>
+        <li>AI 목소리 복제 사례도 함께 봐요.</li>
+        <li>진짜와 가짜의 차이점을 짚어봐요.</li>
+        <li>"가족이라며 돈을 요구하면 먼저 전화로 직접 확인한다" 원칙을 다 같이 소리 내어 말해봐요.</li>
+        <li>역할극으로 대처 상황을 연습해봐요.</li>
+        <li>(개별 연습) 각자 스팸 차단 설정이 켜져 있는지 확인해요.</li>
+        <li>(마무리) 오늘 배운 원칙을 한 문장씩 말해봐요.</li>
+      </ol>
+      <div class="tip"><b>💡 강사 tip</b> 실제 보이스피싱 사례를 짧게 들려주면 경각심이 높아져요.</div>
+    </section>
+
+    <section class="slide slide-divider">
+      <div class="divider-num">14</div>
+      <div class="divider-date">12/18(금)</div>
+      <h2>총정리 · 수료식</h2>
+      <div class="preview-list">
+        <div><b>27차시</b> 배운 내용 총정리</div>
+        <div><b>28차시</b> 수료식</div>
+      </div>
+    </section>
+    <section class="slide">
+      <div class="slide-kicker">14회차 · 12/18 · 27차시 · 10:00–11:00</div>
+      <h2>배운 내용 총정리</h2>
+      <p class="goal">🎯 14주 배운 내용을 함께 복습하고 결과물을 감상한다.</p>
+      <div class="timebar">⏱ <b>도입 5분</b> · 목차 복습 10분 · 퀴즈·발표 35분 · 마무리 10분</div>
+      <ol class="steps">
+        <li>14주 동안 배운 내용을 목차로 함께 훑어봐요.</li>
+        <li>퀴즈 형식으로 하나씩 물어봐요("음성비서 부르는 말은?", "사진 지우는 기능은?" 등).</li>
+        <li>맞춘 분께 박수로 격려해요.</li>
+        <li>각자 만든 그림을 순서대로 보여줘요.</li>
+        <li>각자 만든 영상을 순서대로 재생해요.</li>
+        <li>서로 칭찬할 점을 한 마디씩 나눠요.</li>
+        <li>아직 헷갈리는 기능이 있으면 손을 들어 질문해요.</li>
+        <li>질문 나온 기능을 다시 한 번 시연해줘요.</li>
+        <li>(개별 연습) 헷갈리는 기능만 골라 개별로 다시 연습해요.</li>
+        <li>(마무리) 다음 시간이 마지막 수료식이라고 안내해요.</li>
+      </ol>
+      <div class="tip"><b>💡 강사 tip</b> 발표를 부담스러워하는 분은 옆 사람이 대신 소개해줘도 좋아요.</div>
+    </section>
+    <section class="slide">
+      <div class="slide-kicker">14회차 · 12/18 · 28차시 · 11:00–12:00</div>
+      <h2>수료식</h2>
+      <p class="goal">🎯 궁금한 점을 해소하고 수료를 기념한다.</p>
+      <div class="timebar">⏱ <b>질의응답 20분</b> · 소감 나누기 15분 · 수료증 전달 10분 · 기념촬영 15분</div>
+      <ol class="steps">
+        <li>오늘이 마지막 시간임을 안내해요.</li>
+        <li>자유롭게 궁금한 점을 질문받아요.</li>
+        <li>하나씩 답해줘요.</li>
+        <li>한 사람씩 돌아가며 소감을 나눠요.</li>
+        <li>14주 동안의 사진·영상을 모아 함께 감상해요.</li>
+        <li>수료증(또는 기념 문구)을 한 분씩 전달해요.</li>
+        <li>방금 배운 카메라 기능으로 서로 사진을 찍어줘요.</li>
+        <li>다 함께 모여 기념사진을 찍어요.</li>
+        <li>마지막 인사를 나눠요.</li>
+      </ol>
+      <div class="tip"><b>💡 강사 tip</b> 기념사진은 방금 배운 카메라 기능으로 학생이 직접 찍어보게 하면 좋아요.</div>
+    </section>
+
+  </div>
+</div>
+
+<script>
+  (function(){
+    var slides = null, current = 0;
+
+    window.enterSlideMode = function(){
+      slides = Array.prototype.slice.call(document.querySelectorAll('#slideStage .slide'));
+      document.getElementById('slideTotal').textContent = slides.length;
+      document.body.classList.add('slide-mode');
+      document.getElementById('slideView').classList.add('is-active');
+      show(0);
+    };
+    window.exitSlideMode = function(){
+      document.body.classList.remove('slide-mode');
+      document.getElementById('slideView').classList.remove('is-active');
+      if (document.fullscreenElement) document.exitFullscreen();
+    };
+    function show(i){
+      if (!slides || !slides.length) return;
+      current = Math.max(0, Math.min(i, slides.length - 1));
+      slides.forEach(function(s, idx){ s.classList.toggle('is-current', idx === current); });
+      document.getElementById('slideNo').textContent = current + 1;
+      document.getElementById('slideStage').scrollTop = 0;
+    }
+    window.goNext = function(){ show(current + 1); };
+    window.goPrev = function(){ show(current - 1); };
+    window.toggleFullscreen = function(){
+      if (!document.fullscreenElement) document.getElementById('slideView').requestFullscreen();
+      else document.exitFullscreen();
+    };
+    document.addEventListener('keydown', function(e){
+      if (!document.getElementById('slideView').classList.contains('is-active')) return;
+      if (e.key === 'ArrowRight' || e.key === ' ') { goNext(); }
+      else if (e.key === 'ArrowLeft') { goPrev(); }
+      else if (e.key === 'Escape') { exitSlideMode(); }
+    });
+  })();
+</script>
