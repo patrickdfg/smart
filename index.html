@@ -209,6 +209,48 @@
   .session h3{font-size:1.02rem; font-weight:700;}
   .session p{margin:0; color:var(--text-muted); font-size:.92rem;}
 
+  /* ---------- clickable curriculum cards ---------- */
+  .day{cursor:pointer; border-radius:16px; padding-inline:10px; transition:background .18s ease, transform .18s ease;}
+  .day:hover{background:color-mix(in srgb, var(--surface) 52%, transparent);}
+  .day:focus-visible{outline:3px solid color-mix(in srgb, var(--accent) 55%, transparent); outline-offset:3px;}
+  .session{cursor:pointer; transition:transform .16s ease, border-color .16s ease, box-shadow .16s ease;}
+  .session:hover{transform:translateY(-2px); border-color:color-mix(in srgb, var(--primary) 38%, var(--border));}
+  .session:focus-visible{outline:3px solid color-mix(in srgb, var(--accent) 55%, transparent); outline-offset:3px;}
+  .day-head::after{
+    content:"클릭하면 이 회차 수업 슬라이드 열기";
+    margin-left:auto; font-size:.72rem; font-weight:700; color:var(--primary);
+    background:var(--primary-soft); border-radius:999px; padding:4px 9px;
+  }
+  @media (max-width:640px){.day-head::after{width:100%; margin-left:0; text-align:center;}}
+
+  /* ---------- HTML editor popup ---------- */
+  .html-edit-fab{
+    position:fixed; right:20px; bottom:20px; z-index:80;
+    border:0; border-radius:999px; padding:12px 17px; cursor:pointer;
+    background:var(--accent); color:#fff; font:700 .9rem/1 "Gothic A1",sans-serif;
+    box-shadow:0 10px 24px rgba(0,0,0,.18);
+  }
+  body.slide-mode .html-edit-fab{display:none;}
+  .html-edit-modal{
+    display:none; position:fixed; inset:0; z-index:200; padding:24px;
+    background:rgba(10,18,28,.62); align-items:center; justify-content:center;
+  }
+  .html-edit-modal.is-open{display:flex;}
+  .html-edit-panel{
+    width:min(1100px,96vw); height:min(760px,92vh);
+    background:var(--surface); border:1px solid var(--border); border-radius:18px;
+    box-shadow:0 24px 70px rgba(0,0,0,.28); display:flex; flex-direction:column; overflow:hidden;
+  }
+  .html-edit-head{display:flex; align-items:center; gap:12px; padding:14px 16px; border-bottom:1px solid var(--border);}
+  .html-edit-head strong{font-size:1rem;}
+  .html-edit-head .sp{flex:1;}
+  .html-edit-help{margin:0; padding:10px 16px; font-size:.82rem; color:var(--text-muted); background:var(--surface-2);}
+  #htmlEditor{
+    flex:1; width:100%; resize:none; border:0; outline:0; padding:16px;
+    background:var(--surface); color:var(--text); font:13px/1.55 Consolas,Monaco,monospace; tab-size:2;
+  }
+  .html-edit-actions{display:flex; gap:8px; justify-content:flex-end; flex-wrap:wrap; padding:12px 16px; border-top:1px solid var(--border);}
+
   footer{
     border-top:1px solid var(--border);
     padding-block:30px 50px;
@@ -374,15 +416,13 @@
 <main class="wrap">
 
   <section class="hero">
-    <div class="eyebrow">코딩하루학원 경북도청센터 · 강사 임명진</div>
+    <div class="eyebrow">강사 임명진</div>
     <h1>초보자를 위한 AI 스마트폰 활용</h1>
     <p class="lede">어르신도 스마트폰과 AI를 생활 속에서 편하게 쓸 수 있도록, 이론 20%·실습 80%로 진행하는 14주 커리큘럼입니다. 개별 진도로 운영하며, 음성비서는 기종에 관계없이 구글 어시스턴트·제미나이로 통일해 안내합니다.</p>
 
     <div class="meta-grid">
       <div class="meta-card"><div class="k">운영 기간</div><div class="v">2026.9.4 – 12.18</div></div>
       <div class="meta-card"><div class="k">요일 · 시간</div><div class="v">매주 금 10:00–12:00</div></div>
-      <div class="meta-card"><div class="k">전체 구성</div><div class="v">14회 × 2차시(28차시)</div></div>
-      <div class="meta-card"><div class="k">대상 · 인원</div><div class="v">어르신/성인 · 18명</div></div>
     </div>
 
     <div class="progress-block">
@@ -689,7 +729,7 @@
 
   <footer>
     <div>※ 강의계획서는 사정에 따라 변경될 수 있습니다.</div>
-    <div class="signoff">코딩하루학원 경북도청센터 · 강사 임명진 · 작성일 2026. 9. 12.</div>
+    <div class="signoff">강사 임명진 · 작성일 2026. 9. 12.</div>
   </footer>
 
 </main>
@@ -701,13 +741,14 @@
     <button class="icon-btn" onclick="goPrev()" title="이전(←)">‹</button>
     <button class="icon-btn" onclick="goNext()" title="다음(→)">›</button>
     <span class="sp"></span>
+    <button class="icon-btn" onclick="openHtmlEditor()" title="HTML 수정">✏️</button>
     <span class="slide-count"><span id="slideNo">1</span> / <span id="slideTotal">1</span></span>
     <button class="icon-btn" onclick="toggleFullscreen()" title="전체화면">⛶</button>
   </div>
   <div class="slide-stage" id="slideStage">
 
     <section class="slide slide-cover">
-      <div class="slide-kicker">코딩하루학원 경북도청센터 · 강사 임명진</div>
+      <div class="slide-kicker">강사 임명진</div>
       <h2>초보자를 위한 AI 스마트폰 활용</h2>
       <p class="goal">🎯 스마트폰과 AI를 생활 속에서 편하게 쓸 수 있도록, 한 장씩 그대로 따라 하며 진행합니다.</p>
       <div class="cover-meta">
@@ -1428,22 +1469,73 @@
   </div>
 </div>
 
+<button class="html-edit-fab" type="button" onclick="openHtmlEditor()">✏️ HTML 수정</button>
+
+<div class="html-edit-modal" id="htmlEditModal" aria-hidden="true">
+  <div class="html-edit-panel" role="dialog" aria-modal="true" aria-labelledby="htmlEditTitle">
+    <div class="html-edit-head">
+      <strong id="htmlEditTitle">HTML 직접 수정</strong>
+      <span class="sp"></span>
+      <button class="icon-btn" type="button" onclick="closeHtmlEditor()" title="닫기">✕</button>
+    </div>
+    <p class="html-edit-help">아래 HTML을 수정한 뒤 <b>페이지에 적용</b>을 누르면 즉시 반영됩니다. 수정본을 보관하려면 <b>HTML 파일 저장</b>을 눌러주세요.</p>
+    <textarea id="htmlEditor" spellcheck="false" aria-label="HTML 소스 편집기"></textarea>
+    <div class="html-edit-actions">
+      <button class="btn btn-ghost" type="button" onclick="closeHtmlEditor()">취소</button>
+      <button class="btn btn-ghost" type="button" onclick="downloadEditedHtml()">⬇ HTML 파일 저장</button>
+      <button class="btn btn-primary" type="button" onclick="applyEditedHtml()">✓ 페이지에 적용</button>
+    </div>
+  </div>
+</div>
+
 <script>
   (function(){
     var slides = null, current = 0;
 
-    window.enterSlideMode = function(){
+    function prepareSlides(){
       slides = Array.prototype.slice.call(document.querySelectorAll('#slideStage .slide'));
       document.getElementById('slideTotal').textContent = slides.length;
+      return slides;
+    }
+
+    function activateSlideView(){
+      prepareSlides();
       document.body.classList.add('slide-mode');
       document.getElementById('slideView').classList.add('is-active');
+    }
+
+    window.enterSlideMode = function(){
+      activateSlideView();
       show(0);
     };
+
+    window.enterSlideModeForDay = function(dayNo){
+      activateSlideView();
+      var target = slides.findIndex(function(s){
+        if (!s.classList.contains('slide-divider')) return false;
+        var num = s.querySelector('.divider-num');
+        return num && parseInt(num.textContent,10) === Number(dayNo);
+      });
+      show(target >= 0 ? target : 0);
+    };
+
+    window.enterSlideModeForSession = function(chasiNo){
+      activateSlideView();
+      var needle = Number(chasiNo) + '차시';
+      var target = slides.findIndex(function(s){
+        if (s.classList.contains('slide-divider') || s.classList.contains('slide-cover')) return false;
+        var kicker = s.querySelector('.slide-kicker');
+        return kicker && kicker.textContent.indexOf(needle) !== -1;
+      });
+      show(target >= 0 ? target : 0);
+    };
+
     window.exitSlideMode = function(){
       document.body.classList.remove('slide-mode');
       document.getElementById('slideView').classList.remove('is-active');
       if (document.fullscreenElement) document.exitFullscreen();
     };
+
     function show(i){
       if (!slides || !slides.length) return;
       current = Math.max(0, Math.min(i, slides.length - 1));
@@ -1451,13 +1543,84 @@
       document.getElementById('slideNo').textContent = current + 1;
       document.getElementById('slideStage').scrollTop = 0;
     }
+
     window.goNext = function(){ show(current + 1); };
     window.goPrev = function(){ show(current - 1); };
     window.toggleFullscreen = function(){
       if (!document.fullscreenElement) document.getElementById('slideView').requestFullscreen();
       else document.exitFullscreen();
     };
+
+    // 홈페이지의 회차/차시 카드를 누르면 해당 슬라이드로 바로 이동
+    document.querySelectorAll('.day').forEach(function(day){
+      var dayNo = parseInt(day.id.replace('day-',''),10);
+      day.setAttribute('role','button');
+      day.setAttribute('tabindex','0');
+      day.setAttribute('aria-label', dayNo + '회차 수업 슬라이드 열기');
+      day.addEventListener('click', function(){ enterSlideModeForDay(dayNo); });
+      day.addEventListener('keydown', function(e){
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); enterSlideModeForDay(dayNo); }
+      });
+
+      day.querySelectorAll('.session').forEach(function(session){
+        var chasiEl = session.querySelector('.chasi');
+        var chasiNo = chasiEl ? parseInt(chasiEl.textContent,10) : NaN;
+        if (!Number.isFinite(chasiNo)) return;
+        session.setAttribute('role','button');
+        session.setAttribute('tabindex','0');
+        session.setAttribute('aria-label', chasiNo + '차시 수업 슬라이드 열기');
+        session.addEventListener('click', function(e){ e.stopPropagation(); enterSlideModeForSession(chasiNo); });
+        session.addEventListener('keydown', function(e){
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); enterSlideModeForSession(chasiNo); }
+        });
+      });
+    });
+
+    // HTML 수정 팝업
+    window.openHtmlEditor = function(){
+      var modal = document.getElementById('htmlEditModal');
+      var editor = document.getElementById('htmlEditor');
+      editor.value = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+      modal.classList.add('is-open');
+      modal.setAttribute('aria-hidden','false');
+      setTimeout(function(){ editor.focus(); }, 0);
+    };
+    window.closeHtmlEditor = function(){
+      var modal = document.getElementById('htmlEditModal');
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden','true');
+    };
+    window.applyEditedHtml = function(){
+      var html = document.getElementById('htmlEditor').value;
+      if (!html.trim()) return;
+      document.open();
+      document.write(html);
+      document.close();
+    };
+    window.downloadEditedHtml = function(){
+      var html = document.getElementById('htmlEditor').value;
+      if (!html.trim()) html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+      var blob = new Blob([html], {type:'text/html;charset=utf-8'});
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = 'index_수정본.html';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(function(){ URL.revokeObjectURL(url); }, 500);
+    };
+
+    document.getElementById('htmlEditModal').addEventListener('click', function(e){
+      if (e.target === this) closeHtmlEditor();
+    });
+
     document.addEventListener('keydown', function(e){
+      var modalOpen = document.getElementById('htmlEditModal').classList.contains('is-open');
+      if (modalOpen) {
+        if (e.key === 'Escape') closeHtmlEditor();
+        return;
+      }
       if (!document.getElementById('slideView').classList.contains('is-active')) return;
       if (e.key === 'ArrowRight' || e.key === ' ') { goNext(); }
       else if (e.key === 'ArrowLeft') { goPrev(); }
