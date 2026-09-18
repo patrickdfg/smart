@@ -223,33 +223,38 @@
   }
   @media (max-width:640px){.day-head::after{width:100%; margin-left:0; text-align:center;}}
 
-  /* ---------- HTML editor popup ---------- */
-  .html-edit-fab{
-    position:fixed; right:20px; bottom:20px; z-index:80;
-    border:0; border-radius:999px; padding:12px 17px; cursor:pointer;
-    background:var(--accent); color:#fff; font:700 .9rem/1 "Gothic A1",sans-serif;
-    box-shadow:0 10px 24px rgba(0,0,0,.18);
+
+  /* ---------- 화면 직접 수정 ---------- */
+  .inline-edit-fab{
+    position:fixed; right:18px; bottom:18px; z-index:80;
+    width:38px; height:38px; padding:0; border:1px solid var(--border); border-radius:50%;
+    display:inline-flex; align-items:center; justify-content:center;
+    cursor:pointer; background:var(--surface); color:var(--text); font-size:1rem;
+    box-shadow:0 8px 22px rgba(0,0,0,.16);
   }
-  body.slide-mode .html-edit-fab{display:none;}
-  .html-edit-modal{
-    display:none; position:fixed; inset:0; z-index:200; padding:24px;
-    background:rgba(10,18,28,.62); align-items:center; justify-content:center;
+  .inline-edit-fab:hover{border-color:var(--primary); transform:translateY(-1px);}
+  body.slide-mode .inline-edit-fab{display:none;}
+  body.edit-mode .inline-edit-fab{background:var(--primary); color:var(--bg); border-color:var(--primary);}
+  body.edit-mode .day,
+  body.edit-mode .session{cursor:default;}
+  body.edit-mode .session:hover{transform:none;}
+  body.edit-mode .day-head::after{display:none;}
+  body.edit-mode [contenteditable="true"]{
+    outline:1px dashed color-mix(in srgb, var(--accent) 75%, var(--border));
+    outline-offset:3px; border-radius:4px; cursor:text;
   }
-  .html-edit-modal.is-open{display:flex;}
-  .html-edit-panel{
-    width:min(1100px,96vw); height:min(760px,92vh);
-    background:var(--surface); border:1px solid var(--border); border-radius:18px;
-    box-shadow:0 24px 70px rgba(0,0,0,.28); display:flex; flex-direction:column; overflow:hidden;
+  body.edit-mode [contenteditable="true"]:hover{
+    background:color-mix(in srgb, var(--accent-soft) 45%, transparent);
   }
-  .html-edit-head{display:flex; align-items:center; gap:12px; padding:14px 16px; border-bottom:1px solid var(--border);}
-  .html-edit-head strong{font-size:1rem;}
-  .html-edit-head .sp{flex:1;}
-  .html-edit-help{margin:0; padding:10px 16px; font-size:.82rem; color:var(--text-muted); background:var(--surface-2);}
-  #htmlEditor{
-    flex:1; width:100%; resize:none; border:0; outline:0; padding:16px;
-    background:var(--surface); color:var(--text); font:13px/1.55 Consolas,Monaco,monospace; tab-size:2;
+  body.edit-mode [contenteditable="true"]:focus{
+    outline:2px solid var(--accent); background:var(--surface); box-shadow:0 0 0 4px color-mix(in srgb, var(--accent) 12%, transparent);
   }
-  .html-edit-actions{display:flex; gap:8px; justify-content:flex-end; flex-wrap:wrap; padding:12px 16px; border-top:1px solid var(--border);}
+  .edit-toast{
+    display:none; position:fixed; left:50%; bottom:22px; transform:translateX(-50%); z-index:150;
+    padding:8px 13px; border-radius:999px; background:var(--text); color:var(--bg);
+    font-size:.78rem; font-weight:700; box-shadow:var(--shadow); pointer-events:none;
+  }
+  body.edit-mode .edit-toast{display:block;}
 
   footer{
     border-top:1px solid var(--border);
@@ -741,7 +746,7 @@
     <button class="icon-btn" onclick="goPrev()" title="이전(←)">‹</button>
     <button class="icon-btn" onclick="goNext()" title="다음(→)">›</button>
     <span class="sp"></span>
-    <button class="icon-btn" onclick="openHtmlEditor()" title="HTML 수정">✏️</button>
+    <button class="icon-btn inline-edit-toggle" type="button" onclick="toggleInlineEdit()" title="화면 글자 수정" aria-label="화면 글자 수정">✏️</button>
     <span class="slide-count"><span id="slideNo">1</span> / <span id="slideTotal">1</span></span>
     <button class="icon-btn" onclick="toggleFullscreen()" title="전체화면">⛶</button>
   </div>
@@ -1469,24 +1474,9 @@
   </div>
 </div>
 
-<button class="html-edit-fab" type="button" onclick="openHtmlEditor()">✏️ HTML 수정</button>
 
-<div class="html-edit-modal" id="htmlEditModal" aria-hidden="true">
-  <div class="html-edit-panel" role="dialog" aria-modal="true" aria-labelledby="htmlEditTitle">
-    <div class="html-edit-head">
-      <strong id="htmlEditTitle">HTML 직접 수정</strong>
-      <span class="sp"></span>
-      <button class="icon-btn" type="button" onclick="closeHtmlEditor()" title="닫기">✕</button>
-    </div>
-    <p class="html-edit-help">아래 HTML을 수정한 뒤 <b>페이지에 적용</b>을 누르면 즉시 반영됩니다. 수정본을 보관하려면 <b>HTML 파일 저장</b>을 눌러주세요.</p>
-    <textarea id="htmlEditor" spellcheck="false" aria-label="HTML 소스 편집기"></textarea>
-    <div class="html-edit-actions">
-      <button class="btn btn-ghost" type="button" onclick="closeHtmlEditor()">취소</button>
-      <button class="btn btn-ghost" type="button" onclick="downloadEditedHtml()">⬇ HTML 파일 저장</button>
-      <button class="btn btn-primary" type="button" onclick="applyEditedHtml()">✓ 페이지에 적용</button>
-    </div>
-  </div>
-</div>
+<button class="inline-edit-fab inline-edit-toggle" type="button" onclick="toggleInlineEdit()" title="화면 글자 수정" aria-label="화면 글자 수정">✏️</button>
+<div class="edit-toast" id="editToast">글자를 눌러 바로 수정하세요 · 연필을 다시 누르면 완료</div>
 
 <script>
   (function(){
@@ -1557,8 +1547,9 @@
       day.setAttribute('role','button');
       day.setAttribute('tabindex','0');
       day.setAttribute('aria-label', dayNo + '회차 수업 슬라이드 열기');
-      day.addEventListener('click', function(){ enterSlideModeForDay(dayNo); });
+      day.addEventListener('click', function(){ if (document.body.classList.contains('edit-mode')) return; enterSlideModeForDay(dayNo); });
       day.addEventListener('keydown', function(e){
+        if (document.body.classList.contains('edit-mode')) return;
         if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); enterSlideModeForDay(dayNo); }
       });
 
@@ -1569,56 +1560,91 @@
         session.setAttribute('role','button');
         session.setAttribute('tabindex','0');
         session.setAttribute('aria-label', chasiNo + '차시 수업 슬라이드 열기');
-        session.addEventListener('click', function(e){ e.stopPropagation(); enterSlideModeForSession(chasiNo); });
+        session.addEventListener('click', function(e){ e.stopPropagation(); if (document.body.classList.contains('edit-mode')) return; enterSlideModeForSession(chasiNo); });
         session.addEventListener('keydown', function(e){
+          if (document.body.classList.contains('edit-mode')) return;
           if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); enterSlideModeForSession(chasiNo); }
         });
       });
     });
 
-    // HTML 수정 팝업
-    window.openHtmlEditor = function(){
-      var modal = document.getElementById('htmlEditModal');
-      var editor = document.getElementById('htmlEditor');
-      editor.value = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
-      modal.classList.add('is-open');
-      modal.setAttribute('aria-hidden','false');
-      setTimeout(function(){ editor.focus(); }, 0);
-    };
-    window.closeHtmlEditor = function(){
-      var modal = document.getElementById('htmlEditModal');
-      modal.classList.remove('is-open');
-      modal.setAttribute('aria-hidden','true');
-    };
-    window.applyEditedHtml = function(){
-      var html = document.getElementById('htmlEditor').value;
-      if (!html.trim()) return;
-      document.open();
-      document.write(html);
-      document.close();
-    };
-    window.downloadEditedHtml = function(){
-      var html = document.getElementById('htmlEditor').value;
-      if (!html.trim()) html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
-      var blob = new Blob([html], {type:'text/html;charset=utf-8'});
-      var url = URL.createObjectURL(blob);
-      var a = document.createElement('a');
-      a.href = url;
-      a.download = 'index_수정본.html';
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      setTimeout(function(){ URL.revokeObjectURL(url); }, 500);
+
+    // 화면에서 글자를 직접 수정하는 WYSIWYG 편집 모드
+    var EDITABLE_SELECTOR = [
+      '.hero .eyebrow', '.hero h1', '.hero .lede',
+      '.meta-card .k', '.meta-card .v', '.progress-label span', '.legend > span',
+      '.day-title', '.day-date', '.session h3', '.session p', 'footer > div',
+      '#slideStage .slide-kicker', '#slideStage .slide h2', '#slideStage .goal',
+      '#slideStage .timebar', '#slideStage .steps li', '#slideStage .tip',
+      '#slideStage .divider-date', '#slideStage .preview-list div', '#slideStage .cover-meta span'
+    ].join(',');
+    var STORAGE_KEY = 'smartphone-class-inline-edits-v1';
+    var editing = false;
+
+    function editableElements(){
+      return Array.prototype.slice.call(document.querySelectorAll(EDITABLE_SELECTOR));
+    }
+
+    function saveVisibleEdits(){
+      try {
+        var values = editableElements().map(function(el){ return el.innerHTML; });
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(values));
+      } catch (e) {}
+    }
+
+    function restoreVisibleEdits(){
+      try {
+        var raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        var values = JSON.parse(raw);
+        if (!Array.isArray(values)) return;
+        editableElements().forEach(function(el, i){
+          if (typeof values[i] === 'string') el.innerHTML = values[i];
+        });
+      } catch (e) {}
+    }
+
+    function setEditButtons(active){
+      document.querySelectorAll('.inline-edit-toggle').forEach(function(btn){
+        btn.textContent = active ? '✓' : '✏️';
+        btn.title = active ? '수정 완료' : '화면 글자 수정';
+        btn.setAttribute('aria-label', active ? '수정 완료' : '화면 글자 수정');
+      });
+    }
+
+    window.toggleInlineEdit = function(){
+      editing = !editing;
+      document.body.classList.toggle('edit-mode', editing);
+      editableElements().forEach(function(el){
+        if (editing) {
+          el.setAttribute('contenteditable', 'true');
+          el.setAttribute('spellcheck', 'false');
+        } else {
+          el.removeAttribute('contenteditable');
+          el.removeAttribute('spellcheck');
+        }
+      });
+      if (!editing) saveVisibleEdits();
+      setEditButtons(editing);
     };
 
-    document.getElementById('htmlEditModal').addEventListener('click', function(e){
-      if (e.target === this) closeHtmlEditor();
+    // 붙여넣기할 때 외부 서식을 따라오지 않고 텍스트만 붙여넣음
+    document.addEventListener('paste', function(e){
+      if (!editing || !e.target.closest('[contenteditable="true"]')) return;
+      e.preventDefault();
+      var text = (e.clipboardData || window.clipboardData).getData('text/plain');
+      document.execCommand('insertText', false, text);
     });
 
+    document.addEventListener('input', function(e){
+      if (editing && e.target.closest('[contenteditable="true"]')) saveVisibleEdits();
+    });
+
+    restoreVisibleEdits();
+
     document.addEventListener('keydown', function(e){
-      var modalOpen = document.getElementById('htmlEditModal').classList.contains('is-open');
-      if (modalOpen) {
-        if (e.key === 'Escape') closeHtmlEditor();
+      if (document.body.classList.contains('edit-mode')) {
+        if (e.key === 'Escape') toggleInlineEdit();
         return;
       }
       if (!document.getElementById('slideView').classList.contains('is-active')) return;
