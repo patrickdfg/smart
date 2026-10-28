@@ -30,6 +30,8 @@ body.large-text{font-size:20px}body.large-text .step-list li{font-size:1.05rem}b
 <script>
 (function(){
   const presenter=document.getElementById('presenter'), content=document.getElementById('slideContent'), count=document.getElementById('slideCount');
+  const savedItems=[...document.querySelectorAll('[data-edit-key]')];
+  try{const saved=JSON.parse(localStorage.getItem('smart-health-inline-edits-v1')||'{}');savedItems.forEach(el=>{if(typeof saved[el.dataset.editKey]==='string')el.textContent=saved[el.dataset.editKey]})}catch(err){}
   const slides=[];let current=0;
   slides.push({type:'cover',html:'<div class="presenter-day presenter-slide"><span class="kicker">보건기관 어르신 맞춤형 ICT교육</span><h2>디지털 건강교실</h2><p class="biggoal">4일 · 8차시 · 총 8시간<br>강사 멘트와 단계별 실습을 따라 진행합니다.</p></div>'});
   document.querySelectorAll('.day').forEach(day=>{
