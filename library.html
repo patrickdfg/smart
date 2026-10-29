@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
 <title>스마트폰 첫걸음</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -308,7 +310,7 @@
   }
   .icon-btn:hover{border-color:var(--primary);}
 
-  .slide-stage{flex:1; overflow:auto; display:flex;}
+  .slide-stage{flex:1; min-height:0; overflow:auto; display:flex;}
   .slide{
     display:none;
     flex-direction:column;
@@ -318,6 +320,32 @@
     gap:16px;
   }
   .slide.is-current{display:flex;}
+
+  .guide-overview .teacher-notes{margin-top:16px;}
+  .teacher-notes summary{cursor:pointer; font-size:1.1rem; font-weight:700; padding:14px; background:var(--surface); border:1px solid var(--border); border-radius:12px;}
+  .teacher-notes[open] summary{margin-bottom:16px;}
+  .teacher-notes .steps{margin:16px 0;}
+  .visual-step{max-width:1400px; gap:12px; padding:24px 32px; flex-shrink:0;}
+  .guide-meta{color:var(--accent); font-size:1rem; font-weight:700;}
+  .visual-step h3{font-size:clamp(1.6rem,3vw,2.5rem); margin:0; line-height:1.35;}
+  .guide-content{display:grid; grid-template-columns:minmax(0,1.15fr) minmax(0,1fr); gap:28px; align-items:center;}
+  .guide-content figure{margin:0; min-width:0;}
+  .guide-content img{display:block; width:100%; height:auto; max-height:58vh; object-fit:contain;}
+  .guide-content figcaption{font-size:.9rem; color:var(--text-muted); line-height:1.5; margin-top:8px;}
+  .guide-words{font-size:clamp(1.2rem,2.2vw,2rem); line-height:1.65;}
+  .guide-words p{margin:0 0 18px;}
+  .guide-check{background:var(--primary-soft); border-radius:12px; padding:18px; font-size:.8em;}
+  .slide-status{color:var(--text); padding:8px 18px; margin:0; background:var(--accent-soft);}
+  .icon-btn:disabled{opacity:.4; cursor:default;}
+  @media(max-width:640px){
+    .slide-bar{gap:6px; padding:10px; flex-wrap:wrap;}
+    .slide-bar .icon-btn{width:40px; height:40px;}
+    .slide-count{padding:5px 8px;}
+    .visual-step{padding:18px 16px 30px;}
+    .guide-content{grid-template-columns:1fr; gap:12px;}
+    .guide-content img{max-height:none; width:min(100%,300px); margin:0 auto; aspect-ratio:340 / 500;}
+    .guide-words{font-size:1.25rem;}
+  }
 
   .slide-kicker{
     font-size:.85rem; font-weight:700; letter-spacing:.03em;
@@ -743,13 +771,14 @@
 <div id="slideView">
   <div class="slide-bar">
     <button class="icon-btn" onclick="exitSlideMode()" title="사이트로 나가기">✕</button>
-    <button class="icon-btn" onclick="goPrev()" title="이전(←)">‹</button>
-    <button class="icon-btn" onclick="goNext()" title="다음(→)">›</button>
+    <button class="icon-btn" id="slidePrev" onclick="goPrev()" title="이전(←)" aria-label="이전 슬라이드">‹</button>
+    <button class="icon-btn" id="slideNext" onclick="goNext()" title="다음(→)" aria-label="다음 슬라이드">›</button>
     <span class="sp"></span>
     <button class="icon-btn inline-edit-toggle" type="button" onclick="toggleInlineEdit()" title="화면 글자 수정" aria-label="화면 글자 수정">✏️</button>
     <span class="slide-count"><span id="slideNo">1</span> / <span id="slideTotal">1</span></span>
-    <button class="icon-btn" onclick="toggleFullscreen()" title="전체화면">⛶</button>
+    <button class="icon-btn" id="slideFullscreen" onclick="toggleFullscreen()" title="전체화면" aria-label="전체화면" aria-pressed="false">⛶</button>
   </div>
+  <p class="slide-status" id="slideStatus" role="status" hidden></p>
   <div class="slide-stage" id="slideStage">
 
     <section class="slide slide-cover">
@@ -1531,11 +1560,11 @@
 
     window.enterSlideModeForSession = function(chasiNo){
       activateSlideView();
-      var needle = Number(chasiNo) + '차시';
       var target = slides.findIndex(function(s){
         if (s.classList.contains('slide-divider') || s.classList.contains('slide-cover')) return false;
         var kicker = s.querySelector('.slide-kicker');
-        return kicker && kicker.textContent.indexOf(needle) !== -1;
+        var match = kicker && kicker.textContent.match(/·\s*(\d+)차시\s*·/);
+        return match && Number(match[1]) === Number(chasiNo);
       });
       show(target >= 0 ? target : 0);
     };
@@ -1551,15 +1580,31 @@
       current = Math.max(0, Math.min(i, slides.length - 1));
       slides.forEach(function(s, idx){ s.classList.toggle('is-current', idx === current); });
       document.getElementById('slideNo').textContent = current + 1;
+      document.getElementById('slidePrev').disabled = current === 0;
+      document.getElementById('slideNext').disabled = current === slides.length - 1;
       document.getElementById('slideStage').scrollTop = 0;
     }
 
     window.goNext = function(){ show(current + 1); };
     window.goPrev = function(){ show(current - 1); };
-    window.toggleFullscreen = function(){
-      if (!document.fullscreenElement) document.getElementById('slideView').requestFullscreen();
-      else document.exitFullscreen();
+    window.toggleFullscreen = async function(){
+      var status = document.getElementById('slideStatus');
+      status.hidden = true;
+      try {
+        if (document.fullscreenElement) await document.exitFullscreen();
+        else if (document.getElementById('slideView').requestFullscreen) await document.getElementById('slideView').requestFullscreen();
+        else throw new Error('Fullscreen unavailable');
+      } catch (e) {
+        status.textContent = '이 브라우저에서는 전체화면을 열 수 없어요. 현재 화면에서도 다음·이전으로 수업할 수 있어요.';
+        status.hidden = false;
+      }
     };
+    document.addEventListener('fullscreenchange', function(){
+      var button = document.getElementById('slideFullscreen');
+      var active = Boolean(document.fullscreenElement);
+      button.setAttribute('aria-pressed', String(active));
+      button.setAttribute('aria-label', active ? '전체화면 끝내기' : '전체화면');
+    });
 
     // 홈페이지의 회차/차시 카드를 누르면 해당 슬라이드로 바로 이동
     document.querySelectorAll('.day').forEach(function(day){
@@ -1668,9 +1713,11 @@
         return;
       }
       if (!document.getElementById('slideView').classList.contains('is-active')) return;
-      if (e.key === 'ArrowRight' || e.key === ' ') { goNext(); }
-      else if (e.key === 'ArrowLeft') { goPrev(); }
+      if (e.target.closest('input, textarea, select') || (e.key === ' ' && e.target.closest('button, summary, a'))) return;
+      if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); goNext(); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); goPrev(); }
       else if (e.key === 'Escape') { exitSlideMode(); }
     });
   })();
 </script>
+<script src="assets/library-guides.js?v=20261030" charset="UTF-8"></script>
