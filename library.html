@@ -1148,7 +1148,7 @@
         <div><b>14차시</b> 오래된 사진 복원</div>
       </div>
     </section>
-    <section class="slide">
+    <section class="slide" id="session-13">
       <div class="slide-kicker">7회차 · 10/30 · 13차시 · 10:00–11:00</div>
       <h2>AI 사진 편집 2 — 배경과 인물</h2>
       <p class="goal">🎯 배경을 바꾸고 인물 사진을 보정한다.</p>
@@ -1564,6 +1564,10 @@
     };
 
     window.enterSlideModeForDay = function(dayNo){
+      if (Number(dayNo) === 7) {
+        window.location.href = 'lessons/2026-10-30-photo-editing.html';
+        return;
+      }
       activateSlideView();
       var target = slides.findIndex(function(s){
         if (!s.classList.contains('slide-divider')) return false;
@@ -1593,6 +1597,10 @@
     function show(i){
       if (!slides || !slides.length) return;
       current = Math.max(0, Math.min(i, slides.length - 1));
+      if (slides[current].id === 'session-13') {
+        window.location.href = 'lessons/2026-10-30-photo-editing.html';
+        return;
+      }
       slides.forEach(function(s, idx){ s.classList.toggle('is-current', idx === current); });
       document.getElementById('slideNo').textContent = current + 1;
       document.getElementById('slidePrev').disabled = current === 0;
@@ -1735,4 +1743,10 @@
     });
   })();
 </script>
-<script src="assets/galaxy-guides.js?v=20261030b" charset="UTF-8"></script>
+<script src="assets/galaxy-guides.js?v=20261030c" charset="UTF-8"></script>
+<script>
+  var requestedSession = Number(new URLSearchParams(window.location.search).get('session'));
+  if (requestedSession >= 1 && requestedSession <= 28 && Number.isInteger(requestedSession)) {
+    enterSlideModeForSession(requestedSession);
+  }
+</script>

@@ -156,7 +156,7 @@
   // 기존 글자 수정값을 복원한 뒤 실행하므로 저장 대상의 위치와 순서를 유지한다.
   document.querySelectorAll('#slideStage > .slide').forEach(function(slide){
     var kicker=slide.querySelector('.slide-kicker'), match=kicker&&kicker.textContent.match(/·\s*(\d+)차시\s*·/);
-    if(!match||!lessons[match[1]])return;
+    if(!match||!lessons[match[1]]||Number(match[1])===13)return;
     var session=Number(match[1]); slide.classList.add('guide-overview');
     var details=document.createElement('details'), summary=document.createElement('summary');
     details.className='teacher-notes';summary.textContent='기존 상세 교안 · 강사용 대본 펼치기';details.appendChild(summary);
