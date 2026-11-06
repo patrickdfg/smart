@@ -601,7 +601,10 @@ class App extends React.Component {
     else if (event.key === 'End') {
         this.setState({ index: STEPS.length - 1 });
     } }
-    go(d) { this.setState(s => ({ index: Math.min(STEPS.length - 1, Math.max(0, s.index + d)) })); }
+    go(d) { if (d > 0 && this.state.index === STEPS.length - 1) {
+        window.location.href = '../library.html?session=14';
+        return;
+    } this.setState(s => ({ index: Math.min(STEPS.length - 1, Math.max(0, s.index + d)) })); }
     fullscreen() { if (!document.fullscreenElement) {
         (document.documentElement.requestFullscreen && document.documentElement.requestFullscreen()).catch(() => { });
     }
@@ -656,7 +659,7 @@ class App extends React.Component {
                         React.createElement("span", null, "\uC804\uCCB4 \uD654\uBA74")),
                     React.createElement("button", { className: "nav-button", disabled: s.index === 0, onClick: () => this.go(-1), "aria-label": "\uC774\uC804 \uC2AC\uB77C\uC774\uB4DC" },
                         React.createElement(Chevron, { dir: "left" })),
-                    React.createElement("button", { className: "nav-button next", disabled: s.index === STEPS.length - 1, onClick: () => this.go(1), "aria-label": "\uB2E4\uC74C \uC2AC\uB77C\uC774\uB4DC" },
+                    React.createElement("button", { className: "nav-button next", onClick: () => this.go(1), "aria-label": "\uB2E4\uC74C \uC2AC\uB77C\uC774\uB4DC" },
                         React.createElement("span", null, "\uB2E4\uC74C"),
                         React.createElement(Chevron, null)))),
             s.notes && React.createElement("div", { className: "teacher-notes" },
