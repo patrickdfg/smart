@@ -30,7 +30,7 @@ body.large-text{font-size:20px}body.large-text .step-list li{font-size:1.05rem}b
 (function(){
   const presenter=document.getElementById('presenter'), content=document.getElementById('slideContent'), count=document.getElementById('slideCount');
   const savedItems=[...document.querySelectorAll('[data-edit-key]')];
-  try{const saved=JSON.parse(localStorage.getItem('smart-health-inline-edits-v1')||'{}');savedItems.forEach(el=>{if(typeof saved[el.dataset.editKey]==='string')el.textContent=saved[el.dataset.editKey]})}catch(err){}
+  try{const saved=JSON.parse(localStorage.getItem('smart-health-official-inline-edits-v1')||'{}');savedItems.forEach(el=>{if(typeof saved[el.dataset.editKey]==='string')el.textContent=saved[el.dataset.editKey]})}catch(err){}
   let slides=[],current=0;
   function rebuildSlides(){slides.length=0;slides.push({type:'cover',html:'<div class="presenter-day presenter-slide"><span class="kicker">보건기관 어르신 맞춤형 ICT교육</span><h2>디지털 건강교실</h2><p class="biggoal">4일 · 8차시 · 총 8시간<br>강사 멘트와 단계별 실습을 따라 진행합니다.</p></div>'});
   document.querySelectorAll('.day').forEach(day=>{
@@ -71,7 +71,7 @@ body.large-text{font-size:20px}body.large-text .step-list li{font-size:1.05rem}b
   document.getElementById('nextSlide').addEventListener('click',()=>{current=Math.min(slides.length-1,current+1);render()});
   document.getElementById('fullSlide').addEventListener('click',()=>{if(document.fullscreenElement)document.exitFullscreen();else presenter.requestFullscreen?.()});
   document.addEventListener('keydown',e=>{if(!presenter.classList.contains('active'))return;if(e.key==='Escape'){close()}else if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();current=Math.min(slides.length-1,current+1);render()}else if(e.key==='ArrowLeft'){e.preventDefault();current=Math.max(0,current-1);render()}});
-  let editing=false;const btn=document.getElementById('editBtn'),items=[...document.querySelectorAll('[data-edit-key]')],storage='smart-health-inline-edits-v1';
+  let editing=false;const btn=document.getElementById('editBtn'),items=[...document.querySelectorAll('[data-edit-key]')],storage='smart-health-official-inline-edits-v1';
   try{const edits=JSON.parse(localStorage.getItem(storage)||'{}');items.forEach(el=>{if(typeof edits[el.dataset.editKey]==='string')el.textContent=edits[el.dataset.editKey]})}catch(err){}
   btn.addEventListener('click',()=>{editing=!editing;document.body.classList.toggle('edit-mode',editing);btn.textContent=editing?'✓ 수정 완료':'✏️ 교안 문구 수정';btn.setAttribute('aria-pressed',String(editing));items.forEach(el=>el.contentEditable=String(editing));if(!editing){slides.length=0;location.reload()}});
   function save(){if(!editing)return;const v={};items.forEach(el=>v[el.dataset.editKey]=el.textContent);try{localStorage.setItem(storage,JSON.stringify(v))}catch(err){}}
