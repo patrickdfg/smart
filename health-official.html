@@ -27,6 +27,129 @@ body.large-text{font-size:20px}body.large-text .step-list li{font-size:1.05rem}b
 .survey-card img{display:block;width:min(100%,270px);height:auto;margin:0 auto 12px}
 .survey-card a{display:inline-block;background:#006f70;color:#fff;border-radius:10px;padding:10px 16px;font-weight:800}
 @media(max-width:560px){.survey-grid{grid-template-columns:1fr}#health-survey{scroll-margin-top:145px}}
+/* 화면용 교안 색상과 읽기 크기 */
+@media screen {
+  :root {
+    --navy: #0f294a;
+    --blue: #004ea2;
+    --orange: #e85d04;
+    --orange-ink: #9a3500;
+    --bg: #faf8f5;
+    --ink: #1a202c;
+    --muted: #46566b;
+    --teal: var(--blue);
+    --teal2: var(--blue);
+    --mint: #f0f7ff;
+    --soft: #fff4ed;
+    --line: #cbd5e1;
+    --shadow: 0 10px 36px rgb(15 41 74 / 9%);
+  }
+
+  body { font-size: 19px; overflow-wrap: anywhere; }
+  body.large-text { font-size: 22px; }
+  .topbar { background: #fff; }
+  .logo, .section-heading h2 { color: var(--navy); }
+  .section-heading h2 { font-size: clamp(1.65rem, 4vw, 2.15rem); }
+  .hero {
+    background: linear-gradient(125deg, var(--navy), var(--blue));
+    color: #fff;
+    border-bottom: 5px solid var(--orange);
+  }
+  .hero p.lede { color: #f0f7ff; font-size: 1em; }
+  .hero-art { color: var(--navy); }
+  .stat, .hero-art, .eyebrow { border-color: #c8dff9; }
+  .footer, .edit-bar button { background: var(--navy); color: #fff; }
+
+  .course-nav a[href="#day-1"], #day-1, .survey-card:first-child,
+  .lesson-body > .teach-block:nth-of-type(3n + 1), .presenter-slide .teach-block {
+    --card-color: var(--blue);
+    --card-bg: #f0f7ff;
+    --card-border: var(--blue);
+  }
+  .course-nav a[href="#day-2"], #day-2,
+  .lesson-body > .teach-block:nth-of-type(3n + 2) {
+    --card-color: var(--navy);
+    --card-bg: #edf2fa;
+    --card-border: var(--navy);
+  }
+  .course-nav a[href="#day-3"], #day-3, .survey-card:last-child,
+  .lesson-body > .teach-block:nth-of-type(3n) {
+    --card-color: var(--orange-ink);
+    --card-bg: var(--soft);
+    --card-border: var(--orange);
+  }
+  .course-nav a[href="#day-4"], #day-4 {
+    --card-color: #263f89;
+    --card-bg: #eef2ff;
+    --card-border: #405bb3;
+  }
+
+  .course-nav a, .survey-card, .notice, .day-tools, .original-details {
+    background: var(--card-bg, var(--mint));
+    border: 2px solid var(--card-border, var(--blue));
+  }
+  .course-nav a, .survey-card { border-top-width: 5px; }
+  .course-nav b, .day-head .meta, .day-tools strong, .survey-card h3 {
+    color: var(--card-color, var(--blue));
+  }
+  .course-nav strong, .survey-card h3 { font-size: 1.05em; }
+  .survey-card a, .day-number { background: var(--card-color, var(--blue)); }
+  .notice.warm { border-color: var(--orange); background: var(--soft); }
+  .notice.warm h3 { color: var(--orange-ink); }
+  .day-tools ul, .choice-card ol, .optional ol { font-size: .93em; }
+
+  .lesson-top {
+    background: var(--card-color, var(--navy));
+    color: #fff;
+  }
+  .lesson-label, .lesson-top .goal { color: #fff; }
+  .lesson-top h3 { font-size: clamp(1.5rem, 3.4vw, 2rem); }
+  .lesson-top .goal { font-size: .95em; }
+  .goal b { background: #ffe2bb; color: var(--navy); border-radius: 4px; padding: 2px 5px; }
+  .lesson-btn { background: #fff; color: var(--blue); font-size: .88em; }
+  .lesson-btn:hover { background: #e1eeff; }
+  .lesson-aside { background: #f5f8fd; }
+  .phone { max-width: 100%; }
+
+  .lesson-body > .teach-block, .presenter-slide .teach-block {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-inline-start-width: 5px;
+    border-radius: 16px;
+    margin: 16px 0;
+    padding: clamp(12px, 2vw, 22px);
+  }
+  .clock { background: var(--card-color, var(--navy)); }
+  .block-heading h4 { font-size: 1.13em; }
+  .teacher-line { background: #fff; border-left-color: var(--card-border); color: var(--navy); }
+  .teacher-line span { color: var(--card-color, var(--blue)); }
+  .teacher-line span[data-edit-key] { font-size: inherit; font-weight: 700; letter-spacing: normal; }
+  .step-list li::marker { color: var(--card-color, var(--blue)); }
+  .teacher-line, .step-list li, .checkline, .helpline,
+  body.large-text .teacher-line, body.large-text .step-list li { font-size: .95em; }
+  .checkline { border-inline-start: 4px solid #267253; }
+  .helpline { background: var(--soft); color: var(--orange-ink); border-inline-start: 4px solid var(--orange); }
+
+  .original-details > summary, .manual-jump, .original-pages a {
+    background: var(--mint);
+    color: var(--blue);
+    border-color: #9fc1e8;
+  }
+  .original-pages a:hover { background: #deedff; }
+  #presenter { background: var(--bg); }
+  .presenter-slide h2 { color: var(--navy); }
+  .presenter-slide .biggoal { background: var(--mint); color: var(--navy); }
+  .presenter-slide .teach-block { font-size: 1.08em; }
+
+  @media (max-width: 900px) {
+    .day, .original-manual, #health-survey { scroll-margin-top: 165px; }
+  }
+  @media (max-width: 560px) {
+    .hero h1 { font-size: clamp(1.85rem, 7.5vw, 2.65rem); }
+    .block-heading { flex-wrap: wrap; }
+    .lesson-aside { padding-inline: 16px; }
+  }
+}
 </style></head><body>
 <header class="topbar"><div class="container topbar-inner"><a class="logo" href="index.html"><span class="leaf">✳</span> 스마트 배움교실</a><nav class="topnav" aria-label="교안 메뉴"><a href="index.html">과정 선택</a><a href="library.html">도서관 교안</a><a href="health-official.html" class="current" aria-current="page">보건소 교안</a><button type="button" id="largeBtn" title="화면 글자 크기 확대">가+ 글자 크게</button><a href="#today-original">오늘건강 2026 매뉴얼</a><a href="#health-survey">교육 설문</a></nav></div></header>
 <main><section class="hero"><div class="container hero-inner"><div><span class="eyebrow">강사용 실습 교안 · 2026년 어르신 ICT교육</span><h1>우리 동네 보건소<br>디지털 건강교실</h1><p class="lede">공식 운영 요청서의 4일·8차시 시간표에 맞췄습니다. 오늘건강은 2026년 매뉴얼 이론으로 배우고 나머지는 직접 실습합니다.</p><div class="hero-stats"><div class="stat"><strong>4일</strong><span>일자별 주제</span></div><div class="stat"><strong>8차시</strong><span>차시당 60분</span></div><div class="stat"><strong>8시간</strong><span>총 480분</span></div></div></div><div class="hero-art" aria-hidden="true"><span class="pill">오늘건강 PDF 이론 + 현장 실습</span><div class="art-icon">📱⌚ 🩺</div><h2>읽고 → 누르고 → 확인하고<br>세 번 반복해 익힙니다.</h2><p>어르신 속도에 맞추는 실습 중심 교안</p></div></div></section>
