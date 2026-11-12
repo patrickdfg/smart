@@ -150,6 +150,44 @@ body.large-text{font-size:20px}body.large-text .step-list li{font-size:1.05rem}b
     .lesson-aside { padding-inline: 16px; }
   }
 }
+@media screen {
+  .survey-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+  .survey-actions button, .survey-qr-dialog button {
+    padding: 8px 14px;
+    border: 2px solid var(--card-color, var(--blue));
+    border-radius: 10px;
+    background: #fff;
+    color: var(--card-color, var(--blue));
+    font-weight: 800;
+  }
+  .survey-qr-dialog {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: #fff;
+    color: var(--navy);
+  }
+  .survey-qr-view {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    gap: 12px;
+    width: 100%;
+    height: 100%;
+    padding: 16px;
+    background: #fff;
+  }
+  .survey-qr-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+  .survey-qr-header h2 { margin: 0; font-size: clamp(1.25rem, 4vw, 2rem); }
+  .survey-qr-dialog img { width: 100%; height: 100%; min-height: 0; object-fit: contain; image-rendering: pixelated; }
+  body:has(.survey-qr-dialog[open]) { overflow: hidden; }
+}
+@media print { .survey-actions button, .survey-qr-dialog { display: none !important; } }
 </style></head><body>
 <header class="topbar"><div class="container topbar-inner"><a class="logo" href="index.html"><span class="leaf">✳</span> 스마트 배움교실</a><nav class="topnav" aria-label="교안 메뉴"><a href="index.html">과정 선택</a><a href="library.html">도서관 교안</a><a href="health-official.html" class="current" aria-current="page">보건소 교안</a><button type="button" id="largeBtn" title="화면 글자 크기 확대">가+ 글자 크게</button><a href="#today-original">오늘건강 2026 매뉴얼</a><a href="#health-survey">교육 설문</a></nav></div></header>
 <main><section class="hero"><div class="container hero-inner"><div><span class="eyebrow">강사용 실습 교안 · 2026년 어르신 ICT교육</span><h1>우리 동네 보건소<br>디지털 건강교실</h1><p class="lede">공식 운영 요청서의 4일·8차시 시간표에 맞췄습니다. 오늘건강은 2026년 매뉴얼 이론으로 배우고 나머지는 직접 실습합니다.</p><div class="hero-stats"><div class="stat"><strong>4일</strong><span>일자별 주제</span></div><div class="stat"><strong>8차시</strong><span>차시당 60분</span></div><div class="stat"><strong>8시간</strong><span>총 480분</span></div></div></div><div class="hero-art" aria-hidden="true"><span class="pill">오늘건강 PDF 이론 + 현장 실습</span><div class="art-icon">📱⌚ 🩺</div><h2>읽고 → 누르고 → 확인하고<br>세 번 반복해 익힙니다.</h2><p>어르신 속도에 맞추는 실습 중심 교안</p></div></div></section>
@@ -159,14 +197,29 @@ body.large-text{font-size:20px}body.large-text .step-list li{font-size:1.05rem}b
     <article class="survey-card">
       <h3>수업 전 · 사전 설문</h3>
       <img src="assets/health-survey/before.png" width="450" height="450" alt="사전 설문 QR 코드">
-      <a href="https://forms.gle/W5ra5Y8L7dc5xTny5" target="_blank" rel="noopener">사전 설문 열기</a>
+      <div class="survey-actions">
+        <button type="button" aria-haspopup="dialog" aria-label="사전 설문 QR 전체화면">QR 전체화면</button>
+        <a href="https://forms.gle/W5ra5Y8L7dc5xTny5" target="_blank" rel="noopener">사전 설문 열기</a>
+      </div>
     </article>
     <article class="survey-card">
       <h3>수업 후 · 사후 설문</h3>
       <img src="assets/health-survey/after.png" width="450" height="450" alt="사후 설문 QR 코드">
-      <a href="https://forms.gle/QuvmXcKTssvL3FAR6" target="_blank" rel="noopener">사후 설문 열기</a>
+      <div class="survey-actions">
+        <button type="button" aria-haspopup="dialog" aria-label="사후 설문 QR 전체화면">QR 전체화면</button>
+        <a href="https://forms.gle/QuvmXcKTssvL3FAR6" target="_blank" rel="noopener">사후 설문 열기</a>
+      </div>
     </article>
   </div>
+  <dialog class="survey-qr-dialog" aria-labelledby="survey-qr-title">
+    <div class="survey-qr-view">
+      <div class="survey-qr-header">
+        <h2 id="survey-qr-title"></h2>
+        <form method="dialog"><button type="submit" autofocus>닫기</button></form>
+      </div>
+      <img alt="">
+    </div>
+  </dialog>
 </section>
 <section class="section container" id="guide"><div class="section-heading"><h2>수업 운영 원칙</h2><p>첨부된 보건기관 협조 요청서의 시간표와 현장 유의사항을 반영했습니다.</p></div><div class="notice-grid"><div class="notice"><h3>✓ 이렇게 진행합니다</h3><ul><li>말은 짧게, 버튼·동작·결과를 차례로 보여줍니다.</li><li>시범 1회 → 함께 1회 → 혼자 1회, 핵심 실습 최소 3회 반복합니다.</li><li>보조강사는 기기별 다른 메뉴를 찾아주되 학생이 직접 누르게 돕습니다.</li><li>매일 기관의 QR 설문과 만족도 확인을 진행합니다.</li></ul></div><div class="notice warm"><h3>! 현장 안전과 준비</h3><ul><li>일정·공지·기기 수량은 보건소 담당자와 사전 교차 확인합니다.</li><li>오늘건강 계정·기기 등록은 보건기관의 실제 절차를 우선합니다.</li><li>건강 수치, 주민번호, 금융정보, 비밀번호를 공개하거나 수집하지 않습니다.</li><li>3일차에는 <b>실물 키오스크</b>가 필요합니다. 오늘건강은 기기 실습 없이 PDF 이론으로 진행합니다.</li></ul></div></div><div class="section-heading" style="margin-top:38px"><h2>4일 수업 바로가기</h2><p>날짜가 지정되지 않아 실제 일정 대신 1~4일차로 표시했습니다.</p></div><div class="course-nav"><a href="#day-1"><b>DAY 1 · 1–2차시</b><strong>스마트폰 기초 실습 + 오늘건강 이론</strong><small>기초 · 건강기기 · 120분</small></a><a href="#day-2"><b>DAY 2 · 3–4차시</b><strong>스마트폰 AI 실습 + 오늘건강 이론</strong><small>심화 · 생활 속 AI · 120분</small></a><a href="#day-3"><b>DAY 3 · 5–6차시</b><strong>보건기관 키오스크 실습</strong><small>실물 기기 · 반복 연습 · 120분</small></a><a href="#day-4"><b>DAY 4 · 7–8차시</b><strong>디지털 금융사기 예방</strong><small>스미싱 · 보이스피싱 · 120분</small></a></div></section>
 <section class="section container original-manual" id="today-original">
@@ -198,6 +251,29 @@ body.large-text{font-size:20px}body.large-text .step-list li{font-size:1.05rem}b
 <div id="presenter" role="dialog" aria-modal="true" aria-label="수업 슬라이드" aria-hidden="true"><div class="presenter-bar"><button type="button" id="closeSlide" title="수업 화면 닫기">✕</button><button type="button" id="prevSlide" title="이전 슬라이드, 왼쪽 화살표">‹</button><button type="button" id="nextSlide" title="다음 슬라이드, 오른쪽 화살표">›</button><span class="spacer"></span><span class="presenter-count" id="slideCount"></span><button type="button" id="fullSlide" title="전체화면">⛶</button></div><div class="presenter-content" id="slideContent"></div></div>
 <script>
 (function(){
+  const qrDialog = document.querySelector('.survey-qr-dialog');
+  const qrView = qrDialog.querySelector('.survey-qr-view');
+  const qrImage = qrDialog.querySelector('img');
+  const qrTitle = document.getElementById('survey-qr-title');
+  document.querySelectorAll('.survey-actions button').forEach(button => {
+    button.addEventListener('click', () => {
+      const card = button.closest('.survey-card');
+      const image = card.querySelector('img');
+      qrTitle.textContent = card.querySelector('h3').textContent;
+      qrImage.src = image.src;
+      qrImage.alt = image.alt;
+      qrDialog.showModal();
+      // Keep the viewport-sized dialog available where browser fullscreen is unsupported.
+      qrView.requestFullscreen?.().catch(() => {});
+    });
+  });
+  qrDialog.addEventListener('fullscreenchange', () => {
+    if (!document.fullscreenElement && qrDialog.open) qrDialog.close();
+  });
+  qrDialog.addEventListener('close', () => {
+    if (document.fullscreenElement === qrView) document.exitFullscreen().catch(() => {});
+  });
+
   const presenter=document.getElementById('presenter'), content=document.getElementById('slideContent'), count=document.getElementById('slideCount');
   const savedItems=[...document.querySelectorAll('[data-edit-key]')];
   try{const saved=JSON.parse(localStorage.getItem('smart-health-official-inline-edits-v1')||'{}');savedItems.forEach(el=>{if(typeof saved[el.dataset.editKey]==='string')el.textContent=saved[el.dataset.editKey]})}catch(err){}
